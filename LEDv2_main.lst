@@ -1,0 +1,1032 @@
+
+as12  (v1.2)    absolute assembler for the Motorola CPU12
+Executed: Wed Aug  2 17:12:23 2017
+
+
+                        ;******************************************************************************
+                        ; LED strip controller project using tasks
+                        ; Controls the led strip from pololu
+                        ; How to Assemble: []
+                        ;******************************************************************************
+                        
+                        #include MC9S12G96_ChipDefinition.inc
+                        ;*****************************************************************************************
+                        ;*
+                        ;*	MCS12G96 Chip Definition
+                        ;*
+                        ;*****************************************************************************************
+                        
+2000                    RAM_Start				EQU	$2000					; 8K RAM Memory Map
+3fff                    RAM_End					EQU	$3FFF					; last byte of RAM
+2000                    RAM_Length				EQU	RAM_End-RAM_Start+1		; size of RAM section
+                        
+0400                    EEPROM_Start			EQU	$0400				; 3K EEPROM Memory Map
+0fff                    EEPROM_End				EQU	$0FFF				; last byte of EEPROM
+0c00                    EEPROM_Length			EQU	EEPROM_End-EEPROM_Start+1
+0004                    EEPROM_SectorLen		EQU	4						; a minimum of 4 bytes is erased, 2 bytes burned
+                        
+c000                    FLASH_UnPagedStart		EQU	$C000				; Unpaged FLASH segment - always in Map High Mem
+ffff                    FLASH_UnPagedEnd		EQU	$FFFF
+4000                    FLASH_UnPagedLowStart	EQU	$4000
+7fff                    FLASH_UnPagedLowEnd		EQU	$7FFF
+                        ;
+8000                    FLASH_PagedStart		EQU	$8000				; FLASH Memory Paged Window
+bfff                    FLASH_PagedEnd			EQU	$BFFF				; last buyte of FLASH paged window
+0004                    FLASH_NumPages			EQU	4					; 4 pages of 16K each: 64K
+0200                    FLASH_SectorLen			EQU	512
+0008                    FLASH_PhraseLen			EQU	8
+                        
+ff80                    INTERRUPT_DefaultBase	EQU	$FF80			; default int vector base - unpaged segment
+                        ; all device specific interrupts go here
+fffe                    INTERRUPT_Reset			EQU	$FFFE			; unmaskable, non-relocatable vectors
+fffc                    INTERRUPT_Clock			EQU	$FFFC
+fffa                    INTERRUPT_COP			EQU	$FFFA
+                        
+                        ;PORTA	EQU	$00					; Port A Data
+                        ;PORTB	EQU	$01					; Port B Data
+                        ;DDRA	EQU	$02					; Port A Data Direction
+                        ;DDRB	EQU	$03					; Port B Data Direction
+                        
+000b                    MODE			EQU	$0B					; Memory Map Control
+0080                    MODE_MODC		EQU	%%10000000			; 
+                        ;
+                        ;	Port Integration Module
+                        ;
+000c                    PUCR			EQU	$0C					; Pull Up Control for A,B,C,D,E,BKGND ports
+0040                    PUCR_BKPUE		EQU	%%01000000			; 
+0010                    PUCR_PDPEE		EQU	%%00010000			; 
+                        ;PUCR_PUPDE	EQU	%%00001000			; 
+                        ;PUCR_PUPCE	EQU	%%00001000			; 
+                        ;PUCR_PUPBE	EQU	%%00001000			; 
+                        ;PUCR_PUPAE	EQU	%%00001000			; 
+                        ;
+0011                    DIRECT			EQU	$11					; Direct memory base address {$00xx to $FFxx}
+                        ;
+0013                    MMCCTL			EQU	$13				;
+0001                    MMCCTL_NVMRES	EQU	%%00000001		; 
+                        ;
+0015                    PPAGE			EQU	$15				; Current Memory Page {$0..$F)
+                        ;
+001a                    PARTIDH			EQU	$1A					; part ID
+001b                    PARTIDL			EQU	$1B
+f180                    PartID			EQU	$F180				; G96 and G128
+                        ;
+001c                    ECLKCTL			EQU	$1C				; E Clock Control
+0080                    ECLKCTL_NECLK	EQU	%%10000000		;
+0040                    ECLKCTL_NCLKX2	EQU	%%01000000		;
+0020                    ECLKCTL_DIV16	EQU	%%00100000		;
+001f                    ECLKCTL_EDIV	EQU	$1F				; E clk divider bits
+                        ;
+001e                    IRQCR			EQU	$1E				; IRQ Control
+0080                    IRQCR_IRQE		EQU	%%10000000		; edge
+0040                    IRQCR_IRQEN		EQU	%%01000000		; enable
+                        ;
+                        ;	DEBUG MODULE $20 thru $2F
+                        ;
+                        
+                        ;
+                        ;	Clock and Power Management $34 - $3F
+                        ;
+                        ;	After Reset:
+                        ;	50 MHz VCOCLK operation Post divider is 0x03, 
+                        ;	so PLLCLK is VCOCLK divided by 4, that is 12.5MHz and Bus Clock is 6.25MHz.
+                        ;
+                        ;	PLLCLK = VCOCLK / (POSTDIV+1)
+                        ;	BUS CLK = PLLCLK / 2
+                        ;
+0034                    SYNR			EQU	$34				;
+                        ;
+0035                    CPMUREFDIV			EQU	$35				; Reference Divider Register
+00c0                    CPMUREFDIV_REFFRQ		EQU	$C0			; - bits
+0000                    CPMUREFDIV_REFFRQ_1		EQU	$00			; -- 1MHz <= fREF <= 2MHz
+0040                    CPMUREFDIV_REFFRQ_2		EQU	$40			; -- 2MHz < fREF <= 6MHz
+0080                    CPMUREFDIV_REFFRQ_6		EQU	$80			; -- 6MHz < fREF <= 12MHz
+00c0                    CPMUREFDIV_REFFRQ_12	EQU	$C0			; -- fREF >12MHz
+000f                    CPMUREFDIV_REFDIV		EQU	$0F			; - bits
+                        ;
+0036                    POSTDIV			EQU	$36				; Post divider
+001f                    POSTDIV_Bits	EQU	$1F				; - bits used in the divider
+                        ;
+0037                    CPMUFLG			EQU	$37				;
+0080                    CPMUFLG_RTIF	EQU	%%10000000		; RTI Interrupt Flag
+0040                    CPMUFLG_PORF	EQU	%%01000000		; Power on reset Flag
+0020                    CPMUFLG_LVRF	EQU	%%00100000		; Low Voltage Reset Flag
+0010                    CPMUFLG_LOCKIF	EQU	%%00010000		; PLL Lock Interrupt Flag
+0008                    CPMUFLG_LOCK	EQU	%%00001000		; Lock Status Bit
+0004                    CPMUFLG_ILAF	EQU	%%00000100		; Illegal Address Reset Flag
+0002                    CPMUFLG_OSCIF	EQU	%%00000010		; Oscillator Interrupt Flag
+0001                    CPMUFLG_UPOSC	EQU	%%00000001		; Oscillator Status Bit
+                        ;
+0038                    CPMUINT			EQU	$38				;
+0080                    CPMUINT_RTIE	EQU	%%10000000		; RTI Interrupt Enable
+0039                    CPMUCLKS		EQU	$39				; Clock source selection for PLL, RTI and COP
+0002                    CPMUCLKS_RTI	EQU	%%00000010		; RTI clk source select
+0010                    CPMUCLKS_COP1	EQU	%%00010000		; high bit of COP OSC Select table
+0001                    CPMUCLKS_COP0	EQU	%%00000001		; low bit
+003a                    CPMUPLL			EQU	$3A				;
+003b                    CPMURTI			EQU	$3B				;
+0080                    CPMURTI_RTDEC	EQU	%%10000000		; Use Decimal Divder Chain
+003c                    CPMUCOP			EQU	$3C				;
+0040                    CPMUCOP_RSBCK	EQU	%%01000000		; stop RTI and COP in Active Background Mode
+003f                    CPMUARMCOP		EQU	$3F				; 
+                        ;
+                        ;	TIM $40 - $6F
+                        ;
+0040                    TIOS			EQU	$40				;	Bit mapped 0 = input capture / 1 = output compare
+0041                    CFORC			EQU	$41				;	Bit Mapped
+0042                    OC7M			EQU	$42				;	Bit Mapped
+0043                    OC7D			EQU	$43				;	Bit Mapped
+                        ;
+0044                    TCNT			EQU	$44				; free running counter
+0044                    TCNTH			EQU	$44				;
+0045                    TCNTL			EQU	$45				;
+                        ;
+0046                    TSCR1			EQU	$46				;	Control / Status
+0080                    TSCR1_TEN		EQU	%%10000000		;	Timer Enable 
+0040                    TSCR1_TSWAI		EQU	%%01000000		;	Timer Module Stops While in Wait
+0020                    TSCR1_TSFRZ		EQU	%%00100000		;	Timer Stops While in Freeze Mode
+0010                    TSCR1_TFFCA		EQU	%%00010000		;	Timer Fast Flag Clear All
+0008                    TSCR1_PRNT		EQU	%%00001000		;	Precision Timer
+0047                    TTOV			EQU	$47				;	Toggle On Overflow - bit mapped
+                        ;
+0048                    TCTL1			EQU	$48				;	Output Mode - 2-bit mapped 00 = none, 01 = toggle, 10 = clear, 11 = set
+00c0                    TCTL1_BITS7		EQU	%%11000000		; bits for Timer 7 mode
+0040                    TCTL1_TOGL7		EQU	%%01000000
+0080                    TCTL1_CLR7		EQU	%%10000000
+00c0                    TCTL1_SET7		EQU	%%11000000
+0030                    TCTL1_BITS6		EQU	%%00110000		; bits for Timer 6 mode
+0010                    TCTL1_TOGL6		EQU	%%00010000
+0020                    TCTL1_CLR6		EQU	%%00100000
+0030                    TCTL1_SET6		EQU	%%00110000
+000c                    TCTL1_BITS5		EQU	%%00001100		; bits for Timer 5 mode
+0004                    TCTL1_TOGL5		EQU	%%00000100
+0008                    TCTL1_CLR5		EQU	%%00001000
+000c                    TCTL1_SET5		EQU	%%00001100
+0003                    TCTL1_BITS4		EQU	%%00000011		; bits for Timer 5 mode
+0001                    TCTL1_TOGL4		EQU	%%00000001
+0002                    TCTL1_CLR4		EQU	%%00000010
+0003                    TCTL1_SET4		EQU	%%00000011
+                        ;
+0049                    TCTL2			EQU	$49				;	
+00c0                    TCTL2_BITS3		EQU	%%11000000		; bits for Timer 3 mode
+0040                    TCTL2_TOGL3		EQU	%%01000000
+0080                    TCTL2_CLR3		EQU	%%10000000
+00c0                    TCTL2_SET3		EQU	%%11000000
+0030                    TCTL2_BITS2		EQU	%%00110000		; bits for Timer 2 mode
+0010                    TCTL2_TOGL2		EQU	%%00010000
+0020                    TCTL2_CLR2		EQU	%%00100000
+0030                    TCTL2_SET2		EQU	%%00110000
+000c                    TCTL2_BITS1		EQU	%%00001100		; bits for Timer 1 mode
+0004                    TCTL2_TOGL1		EQU	%%00000100
+0008                    TCTL2_CLR1		EQU	%%00001000
+000c                    TCTL2_SET1		EQU	%%00001100
+0003                    TCTL2_BITS0		EQU	%%00000011		; bits for Timer 0 mode
+0001                    TCTL2_TOGL0		EQU	%%00000001
+0002                    TCTL2_CLR0		EQU	%%00000010
+0003                    TCTL2_SET0		EQU	%%00000011
+                        ;
+004a                    TCTL3			EQU	$4A				;	Input Capture Mode - 2-bit mapped - 00 = disabled, 01 = rising, 10 = falling, 11 = both
+00c0                    TCTL3_BITS7		EQU	%%11000000		; bits for Timer 7 mode
+0040                    TCTL3_RIS7		EQU	%%01000000
+0080                    TCTL3_FAL7		EQU	%%10000000
+00c0                    TCTL3_BOTH7		EQU	%%11000000
+0030                    TCTL3_BITS6		EQU	%%00110000		; bits for Timer 6 mode
+0010                    TCTL3_RIS6		EQU	%%00010000
+0020                    TCTL3_FAL6		EQU	%%00100000
+0030                    TCTL3_BOTH6		EQU	%%00110000
+000c                    TCTL3_BITS5		EQU	%%00001100		; bits for Timer 5 mode
+0004                    TCTL3_RIS5		EQU	%%00000100
+0008                    TCTL3_FAL5		EQU	%%00001000
+000c                    TCTL3_BOTH5		EQU	%%00001100
+0003                    TCTL3_BITS4		EQU	%%00000011		; bits for Timer 5 mode
+0001                    TCTL3_RIS4		EQU	%%00000001
+0002                    TCTL3_FAL4		EQU	%%00000010
+0003                    TCTL3_BOTH4		EQU	%%00000011
+                        ;
+004b                    TCTL4			EQU	$4B				;
+00c0                    TCTL4_BITS3		EQU	%%11000000		; bits for Timer 3 mode
+0040                    TCTL4_RIS3		EQU	%%01000000
+0080                    TCTL4_FAL3		EQU	%%10000000
+00c0                    TCTL4_BOTH3		EQU	%%11000000
+0030                    TCTL4_BITS2		EQU	%%00110000		; bits for Timer 2 mode
+0010                    TCTL4_RIS2		EQU	%%00010000
+0020                    TCTL4_FAL2		EQU	%%00100000
+0030                    TCTL4_BOTH2		EQU	%%00110000
+000c                    TCTL4_BITS1		EQU	%%00001100		; bits for Timer 1 mode
+0004                    TCTL4_RIS1		EQU	%%00000100
+0008                    TCTL4_FAL1		EQU	%%00001000
+000c                    TCTL4_BOTH1		EQU	%%00001100
+0003                    TCTL4_BITS0		EQU	%%00000011		; bits for Timer 0 mode
+0001                    TCTL4_RIS0		EQU	%%00000001
+0002                    TCTL4_FAL0		EQU	%%00000010
+0003                    TCTL4_BOTH0		EQU	%%00000011
+                        ;
+004c                    TIE				EQU	$4C				;	bit mapped
+                        ;;TSCR2			EQU	$4E				;
+004d                    TSCR2			EQU	$4D				;
+0080                    TSCR2_TOI		EQU	%%10000000		; overflow interrupt
+0008                    TSCR2_TCRE		EQU	%%00001000		; 
+0004                    TSCR2_PR2		EQU	%%00000100		; prescalers
+0002                    TSCR2_PR1		EQU	%%00000010
+0001                    TSCR2_PR0		EQU	%%00000001
+                        ;;TFLG1			EQU	$4F				;	bit mapped
+004e                    TFLG1			EQU	$4E				;	bit mapped
+004f                    TFLG2			EQU	$4F				;	
+0080                    TFLG2_TOF		EQU	%%10000000		; Timer Overflow Flag
+                        ;
+0050                    TC0				EQU	$50
+0050                    TC0H			EQU	$50				;	Timer 0 Counter High
+0051                    TC0L			EQU	$51				;	Timer 0 Counter Low
+0052                    TC1				EQU	$52
+0052                    TC1H			EQU	$52
+0053                    TC1L			EQU	$53
+0054                    TC2				EQU	$54
+0054                    TC2H			EQU	$54
+0055                    TC2L			EQU	$55
+0056                    TC3				EQU	$56
+0056                    TC3H			EQU	$56
+0057                    TC3L			EQU	$57
+0058                    TC4				EQU	$58
+0058                    TC4H			EQU	$58
+0059                    TC4L			EQU	$59
+005a                    TC5				EQU	$5A
+005a                    TC5H			EQU	$5A
+005b                    TC5L			EQU	$5B
+005c                    TC6				EQU	$5C
+005c                    TC6H			EQU	$5C
+005d                    TC6L			EQU	$5D
+005e                    TC7				EQU	$5E
+005e                    TC7H			EQU	$5E
+005f                    TC7L			EQU	$5F
+                        ;
+0060                    PACTL			EQU	$60				; Pulse Accumulator Control
+0061                    PAFLG			EQU	$61				;
+0062                    PACNTH			EQU	$62				;
+0063                    PACNTL			EQU	$63				;
+006c                    OCPD			EQU	$6C				;
+006e                    PTPSR			EQU	$6E				;
+                        ;
+                        ;	ADC $70 - $9F
+                        ;
+0070                    ATDCTL0			EQU	$70				; ADC Module Controls
+000f                    ATDCTL0_WRAP	EQU	%%00001111		; Wrap channel bits
+                        ;
+0071                    ATDCTL1			EQU	$71				;
+0080                    ATDCTL1_ETRIG	EQU	%%10000000		; External trigger select
+0060                    ATDCTL1_SRES	EQU	%%01100000		; resolution bits 00 = 8, 01 = 10
+0020                    ATDCTL1_SRES10	EQU	%%00100000
+0010                    ATDCTL1_SMP_DIS	EQU	%%00010000		; Discharge before conversion
+000f                    ATDCTL1_ETRIGCH	EQU	%%00001111		; External trigger select bits
+                        ;
+0072                    ATDCTL2			EQU	$72				;
+0040                    ATDCTL2_AFFC	EQU	%%01000000		; Fast Flag Clear All
+0010                    ATDCTL2_ETRIGLE	EQU	%%00010000		; External trigger Level/Edge
+0008                    ATDCTL2_ETRIGP	EQU	%%00001000		; External trigger Polarity
+0004                    ATDCTL2_ETRIGE	EQU	%%00000100		; External trigger Enable
+0002                    ATDCTL2_ASCIE	EQU	%%00000010		; ATD Sequence Complete Interrupt Enable
+0001                    ATDCTL2_ACMPIE	EQU	%%00000001		; ATD Compare Interrupt Enable
+                        ;
+0073                    ATDCTL3			EQU	$73				;
+0080                    ATDCTL3_DJM		EQU	%%10000000		; Result Register Data Justification 0 = left, 1 = right
+0078                    ATDCTL3_SEQLEN	EQU	%%01111000		; Conversion Sequence Length
+0004                    ATDCTL3_FIFO	EQU	%%00000100		; Result Register FIFO mode
+0003                    ATDCTL3_FRZ		EQU	%%00000011		; Debug mode freeze bits
+                        ;
+0074                    ATDCTL4			EQU	$74				;
+00e0                    ATDCTL4_SMP		EQU	%%11100000		; Sample Time Select bits
+001f                    ATDCTL4_PRS		EQU	%%00011111		; ATD Clock Prescaler
+                        ;
+0075                    ATDCTL5			EQU	$75				;
+0040                    ATDCTL5_SC		EQU	%%01000000		; Special Channel Conversion Bit
+0020                    ATDCTL5_SCAN	EQU	%%00100000		; Continuous Conversion Sequence Mode
+0010                    ATDCTL5_MULT	EQU	%%00010000		; Multi-Channel Sample Mode
+000f                    ATDCTL5_CHAN	EQU	%%00001111		; Analog Input Channel Select Code
+                        ;
+0076                    ATDSTAT0		EQU	$76				; Status
+0080                    ATDSTAT0_SCF	EQU	%%10000000		; Sequence Complete Flag
+0020                    ATDSTAT0_ETORF	EQU	%%00100000		; External Trigger Overrun Flag
+0010                    ATDSTAT0_FIFOR	EQU	%%00010000		; Result Register Overrun Flag
+000f                    ATDSTAT0_CC		EQU	%%00001111		; Conversion Counter Bits
+                        ;
+0078                    ATDCMPEH		EQU	$78				; Compare Enable for Conversion Number {bit[0..11] }
+0079                    ATDCMPEL		EQU	$79				;
+                        ;
+007a                    ATDSTAT2H		EQU	$7A				; Conversion Complete Flags { bit[0..11] }
+007b                    ATDSTAT2L		EQU	$7B				;
+                        ;
+007c                    ATDDIENH		EQU	$7C				; ATD Digital Input Enable on channel { bit[0..11] }
+007d                    ATDDIENL		EQU	$7D				;
+                        ;
+007e                    ATDCMPHTH		EQU	$7E				; Compare Operation Higher Than Enable for conversion number {bit[0..1] }
+007f                    ATDCMPHTL		EQU	$7F				;
+                        ;
+0080                    ATDDR0			EQU	$80				; ADC Results (double register)
+0082                    ATDDR1			EQU	$82
+0084                    ATDDR2			EQU	$84
+0086                    ATDDR3			EQU	$86
+0088                    ATDDR4			EQU	$88
+008a                    ATDDR5			EQU	$8A
+008c                    ATDDR6			EQU	$8C
+008e                    ATDDR7			EQU	$8E
+0090                    ATDDR8			EQU	$90
+0092                    ATDDR9			EQU	$92
+0094                    ATDDR10			EQU	$94
+0096                    ATDDR11			EQU	$96
+0098                    ATDDR12			EQU	$98
+009a                    ATDDR13			EQU	$9A
+009c                    ATDDR14			EQU	$9C
+009e                    ATDDR15			EQU	$9E
+                        ;
+                        ;	PWM	$A0 - $C7
+                        ;
+00a0                    PWME			EQU	$A0				; Enable
+00a1                    PWMPOL			EQU	$A1				; Polarity
+00a2                    PWMCLK			EQU	$A2				; Clock Select ( A,B,AB,etc )
+00a3                    PWMPRCLK		EQU	$A3				; Prescale A,B
+00a4                    PWMCAE			EQU	$A4				; Center Align
+00a5                    PWMCTL			EQU	$A5				; Control - Concat and freeze
+00a6                    PWMCLKAB		EQU	$A6				; AB Clock Select
+00a8                    PWMSCLA			EQU	$A8				; Scale A
+00a9                    PWMSCLB			EQU	$A9				; Scale B
+00ac                    PWMCNT0			EQU	$AC				; 8-bit Up/Down Counters
+00ad                    PWMCNT1			EQU	$AD
+00ae                    PWMCNT2			EQU	$AE
+00af                    PWMCNT3			EQU	$AF
+00b0                    PWMCNT4			EQU	$B0
+00b1                    PWMCNT5			EQU	$B1
+00b2                    PWMCNT6			EQU	$B2
+00b3                    PWMCNT7			EQU	$B3
+00b4                    PWMPER0			EQU	$B4				; Periods
+00b5                    PWMPER1			EQU	$B5
+00b6                    PWMPER2			EQU	$B6
+00b7                    PWMPER3			EQU	$B7
+00b8                    PWMPER4			EQU	$B8
+00b9                    PWMPER5			EQU	$B9
+00ba                    PWMPER6			EQU	$BA
+00bb                    PWMPER7			EQU	$BB
+00bc                    PWMDTY0			EQU	$BC				; Duty Cycles
+00bd                    PWMDTY1			EQU	$BD
+00be                    PWMDTY2			EQU	$BE
+00bf                    PWMDTY3			EQU	$BF
+00c0                    PWMDTY4			EQU	$C0
+00c1                    PWMDTY5			EQU	$C1
+00c2                    PWMDTY6			EQU	$C2
+00c3                    PWMDTY7			EQU	$C3
+                        ;
+                        ;	SCI 0 $C8 - $CF
+                        ;
+00c8                    SCI0ASR1		EQU	$C8				; Aux mode
+00c9                    SCI0ACR1		EQU	$C9				; Aux Mode
+00ca                    SCI0ACR2		EQU	$CA				; Aux Mode
+                        ;
+00c8                    SCI0BDH			EQU	$C8				; Baud Rate divider
+00c9                    SCI0BDL			EQU	$C9				; SCI baud rate = SCI bus clock / (16 x SBR[12:0])
+                        ;
+00ca                    SCI0CR1			EQU	$CA				; Control Reg 1
+0080                    SCICR1_LOOPS	EQU	%%10000000		; Loop Mode
+0040                    SCICR1_SCISWAI	EQU	%%01000000		; Stop in Wait Mode
+0020                    SCICR1_RSRC		EQU	%%00100000		; RCVR Source in Loop Mode (can connect RX to TX internally)
+0010                    SCICR1_M		EQU	%%00010000		; 9 Bit Mode ( 0 = 8,1,N )
+0008                    SCICR1_WAKE		EQU	%%00001000		; Wake on address Mark
+0004                    SCICR1_ILT		EQU	%%00000100		; Idle Line Type
+0002                    SCICR1_PE		EQU	%%00000010		; Parity Enable
+0001                    SCICR1_PT		EQU	%%00000001		; Parity Type if PE ( 0 = even )
+                        ;
+00cb                    SCI0CR2			EQU	$CB				; 
+0080                    SCICR2_TIE		EQU	%%10000000		; TX Int Enable
+0040                    SCICR2_TCIE		EQU	%%01000000		; TX Complete Interrupt Enable
+0020                    SCICR2_RIE		EQU	%%00100000		; RX Int Enable
+0010                    SCICR2_ILIE		EQU	%%00010000		; Idle Line Int Enable
+0008                    SCICR2_TE		EQU	%%00001000		; TX Enable
+0004                    SCICR2_RE		EQU	%%00000100		; RX Enable
+0002                    SCICR2_RWU		EQU	%%00000010		; RX Wake Up
+0001                    SCICR2_SBK		EQU	%%00000001		; Send Break
+                        ;
+00cc                    SCI0SR1			EQU	$CC				; Status Flag Register - clears interrupts - applies to all SCIx
+0080                    SCISR1_TDRE		EQU	%%10000000		; TD Reg Empty
+0040                    SCISR1_TC		EQU	%%01000000		; Transmit Complete
+0020                    SCISR1_RDRF		EQU	%%00100000		; RD Reg Full
+0010                    SCISR1_IDLE		EQU	%%00010000		; Idle Line Flag
+0008                    SCISR1_OR		EQU	%%00001000		; Overrun
+0004                    SCISR1_NF		EQU	%%00000100		; Noise Flag
+0002                    SCISR1_FE		EQU	%%00000010		; Framing Error
+0001                    SCISR1_PF		EQU	%%00000001		; Parity Error
+                        ;
+00cd                    SCI0SR2			EQU	$CD				; Status Reg 2 - Alternate mode stuff
+                        ;
+00ce                    SCI0DRH			EQU	$CE				; Data Reg High
+00cf                    SCI0DRL			EQU	$CF				; Data Reg Low
+                        ;
+                        ;	SCI 1 $D8 - $D7
+                        ;
+00d0                    SCI1BDH			EQU	$D0				; 
+00d0                    SCI1ASR1		EQU	$D0				; 
+00d1                    SCI1BDL			EQU	$D1				; 
+00d1                    SCI1ACR1		EQU	$D1				; 
+00d2                    SCI1CR1			EQU	$D2				; 
+00d2                    SCI1ACR2		EQU	$D2				; 
+00d3                    SCI1CR2			EQU	$D3				; 
+00d4                    SCI1SR1			EQU	$D4				; 
+00d5                    SCI1SR2			EQU	$D5				; 
+00d6                    SCI1DRH			EQU	$D6				; 
+00d7                    SCI1DRL			EQU	$D7				; 
+                        ;
+                        ;	SPI 0 $D8 - $DF
+                        ;
+00d8                    SPI0CR1			EQU	$D8				; Control Register 1
+0080                    SPICR1_SPIE		EQU	%%10000000		;  Int enable
+0040                    SPICR1_SPE		EQU	%%01000000		;  SPI enable
+0020                    SPICR1_SPTIE	EQU	%%00100000		;  TX Int enable
+0010                    SPICR1_MSTR		EQU	%%00010000		;  Master enable
+0008                    SPICR1_CPOL		EQU	%%00001000		;  Clock Polarity
+0004                    SPICR1_CPHA		EQU	%%00000100		;  Clock Phase
+0002                    SPICR1_SSOE		EQU	%%00000010		;  Slave Select Output Enable
+0001                    SPICR1_LSBFE	EQU	%%00000001		;  LSB First enable
+                        ;
+00d9                    SPI0CR2			EQU	$D9				; Control Register 2
+0040                    SPICR2_XFRW		EQU	%%01000000		; 16 Bit XFER
+0010                    SPICR2_MODFEN	EQU	%%00010000		; Mode Fault Enable
+0008                    SPICR2_BIDIROE	EQU	%%00001000		; OE in Bidi Mode
+0002                    SPICR2_SPISWAI	EQU	%%00000010		; Stop in Wait Mode
+0001                    SPICR2_SPC0		EQU	%%00000001		; Serial Pin 0
+                        ;
+00da                    SPI0BR			EQU	$DA				; Baud Rate Register
+0070                    SPIBR_SPPR		EQU	%%01110000		; PreSelection bits
+0007                    SPIBR_SPR		EQU	%%00000111		; Selection bits
+0077                    SPIBR_12KHZ		EQU	%%01110111		; slowest rate
+0026                    SPIBR_130KHZ	EQU	%%00100110		; 130.21khz
+0000                    SPIBR_12MHZ		EQU	%%00000000		; fastest rate
+                        ;
+00db                    SPI0SR			EQU	$DB				; Status Register
+0080                    SPISR_SPIF		EQU	%%10000000		; Int Flag
+0020                    SPISR_SPTEF		EQU	%%00100000		; TX Int Flag
+0010                    SPISR_MODF		EQU	%%00010000		; Mode Fail Flag
+                        ;
+00dc                    SPI0DRH			EQU	$DC				; Data Hi  { 15..8 }
+00dd                    SPI0DRL			EQU	$DD				; Data Low { 7..0 }
+                        ;
+                        ;	SCI 2 $E8 - $EF
+                        ;
+00e8                    SCI2BDH			EQU	$E8				; 
+00e8                    SCI2ASR1		EQU	$E8				; 
+00e9                    SCI2BDL			EQU	$E9				; 
+00e9                    SCI2ACR1		EQU	$E9				; 
+00ea                    SCI2CR1			EQU	$EA				; 
+00ea                    SCI2ACR2		EQU	$EA				; 
+00eb                    SCI2CR2			EQU	$EB				; 
+00ec                    SCI2SR1			EQU	$EC				; 
+00ed                    SCI2SR2			EQU	$ED				; 
+00ee                    SCI2DRH			EQU	$EE				; 
+00ef                    SCI2DRL			EQU	$EF				; 
+                        ;
+                        ;	SPI 1 $F0 - $F7
+                        ;
+00f0                    SPI1CR1			EQU	$F0				; 
+00f1                    SPI1CR2			EQU	$F1				; 
+00f2                    SPI1BR			EQU	$F2				; 
+00f3                    SPI1SR			EQU	$F3				; 
+00f4                    SPI1DRH			EQU	$F4				; 
+00f5                    SPI1DRL			EQU	$F5				; 
+                        ;
+                        ;	SPI 2 $F8 - $FF
+                        ;
+00f8                    SPI2CR1			EQU	$F8				; 
+00f9                    SPI2CR2			EQU	$F9				; 
+00fa                    SPI2BR			EQU	$FA				; 
+00fb                    SPI2SR			EQU	$FB				; 
+00fc                    SPI2DRH			EQU	$FC				; 
+00fd                    SPI2DRL			EQU	$FD				; 
+                        ;
+                        ;	FLASH Module FTMRG  $100 - $113
+                        ;
+0100                    FCLKDIV			EQU	$100			; Flash Clock Divider
+0080                    FCLKDIV_FDIVLD	EQU	$80				; - Clock Divider Loaded (RO)
+0040                    FCLKDIV_FDIVLCK	EQU	$40				; - Clock Divider Locked
+003f                    FCLKDIV_DivMask	EQU	$3F				; - Clock Divider Bits
+0000                    FCLKDIV_1		EQU	$00				; -- 1.0 to 1.6 MHz Bus Clock
+0001                    FCLKDIV_2		EQU	$01				; -- 1.6 to 2.6
+0002                    FCLKDIV_3		EQU	$02				; -- 2.6 to 3.6
+0003                    FCLKDIV_4		EQU	$03				; -- 3.6 to 4.6
+0004                    FCLKDIV_5		EQU	$04				; -- 4.6 to 5.6
+0005                    FCLKDIV_6		EQU	$05				; -- 5.6 to 6.6		POSTDIV = 3 (Default) 
+0006                    FCLKDIV_7		EQU	$06				; -- 6.6 to 7.6
+0007                    FCLKDIV_8		EQU	$07				; -- 7.6 to 8.6		POSTDIV = 2 (Default)
+0008                    FCLKDIV_9		EQU	$08				; -- 8.6 to 9.6
+0009                    FCLKDIV_10		EQU	$09				; -- 9.6 to 10.6
+000a                    FCLKDIV_11		EQU	$0A				; -- 10.6 to 11.6
+000b                    FCLKDIV_12		EQU	$0B				; -- 11.6 to 12.6	POSTDIV = 1 (Default)
+000c                    FCLKDIV_13		EQU	$0C				; -- 12.6 to 13.6
+000d                    FCLKDIV_14		EQU	$0D				; -- 13.6 to 14.6
+000e                    FCLKDIV_15		EQU	$0E				; -- 14.6 to 15.6
+000f                    FCLKDIV_16		EQU	$0F				; -- 15.6 to 16.6
+0010                    FCLKDIV_17		EQU	$10				; -- 16.6 to 17.6
+0011                    FCLKDIV_18		EQU	$11				; -- 17.6 to 18.6
+0012                    FCLKDIV_19		EQU	$12				; -- 18.6 to 19.6
+0013                    FCLKDIV_20		EQU	$13				; -- 19.6 to 20.6
+0014                    FCLKDIV_21		EQU	$14				; -- 20.6 to 21.6
+0015                    FCLKDIV_22		EQU	$15				; -- 21.6 to 22.6
+0016                    FCLKDIV_23		EQU	$16				; -- 22.6 to 23.6
+0017                    FCLKDIV_24		EQU	$17				; -- 23.6 to 24.6
+0018                    FCLKDIV_25		EQU	$18				; -- 24.6 to 25.6	POSTDIV = 0 (Default)
+                        ;
+0101                    FSEC			EQU	$101			; Flash Security Register
+00c0                    FSEC_KEYEN		EQU	$C0				; - Backdoor Key Security Enable Bits
+0080                    FSEC_KEYEN_EN	EQU	$80				; -- Enabled ( all other patterns are Disabled )
+003c                    FSEC_RNV		EQU	$3C				; - Reserved Nonvolatile Bits
+0003                    FSEC_SEC		EQU	$03				; - Flash Security Bits
+0002                    FSEC_SEC_NOT	EQU	$02				; -- Unsecured (all other patterns are Secured)
+                        ;
+0102                    FCCOBIX			EQU	$102			; Flash CCOB Index Register
+0003                    FCCOBIX_Bits	EQU	$03				; - Common Command Register Index
+                        ;
+0104                    FCNFG			EQU	$104			; Flash Configuration Register
+0080                    FCNFG_CCIE		EQU	$80				; - Command Complete Interrupt Enable
+0010                    FCNFG_IGNSF		EQU	$10				; - Ignore Single Bit Fault
+0002                    FCNFG_FDFD		EQU	$02				; - Force Double Bit Fault Detect
+0001                    FCNFG_FSFD		EQU	$01				; - Force Single Bit Fault Detect
+                        ;
+0105                    FERCNFG			EQU	$105			; Flash Error Configuration Register
+0002                    FERCNFG_DFDIE	EQU	$02				; - Double Bit Fault Detect Interrupt Enable
+0001                    FERCNFG_SFDIE	EQU	$01				; - Single Bit Fault Detect Interrupt Enable
+                        ;
+0106                    FSTAT			EQU	$106			; Flash Status Register
+0080                    FSTAT_CCIF		EQU	$80				; - Command Complete Interrupt Flag
+0020                    FSTAT_ACCERR	EQU	$20				; - Flash Access Error Flag
+0010                    FSTAT_FPVIOL	EQU	$10				; - Flash Protection Violation Flag
+0008                    FSTAT_MGBUSY	EQU	$08				; - Memory Controller Busy Flag
+0004                    FSTAT_RSVD		EQU	$04				; - Reserved Bit
+0003                    FSTAT_MGSTAT	EQU	$03				; - Memory Controller Command Completion Status Flag
+                        ;
+0107                    FERSTAT			EQU	$107			; Flash Error Status Register
+0002                    FERSTAT_DFDIF	EQU	$02				; - Double Bit Fault Detect Interrupt Flag
+0001                    FERSTAT_SFDIF	EQU	$01				; - Single Bit Fault Detect Interrupt Flag
+                        ;
+0108                    FPROT			EQU	$108			; P-Flash Protection Register
+0080                    FPROT_FPOPEN	EQU	$80				; - Flash Protection Operation Enable
+0040                    FPROT_RNV6		EQU	$40				; - Reserved Nonvolatile Bit
+0020                    FPROT_FPHDIS	EQU	$20				; - Flash Protection Higher Address Range Disable
+0018                    FPROT_FPHS		EQU	$18				; - Flash Protection Higher Address Size
+0007                    FPROT_RNV		EQU	$07				; - Reserved Nonvolatile Bits
+                        ;
+0109                    EEPROT			EQU	$109			; EEPROM Protection Register
+0080                    EEPROT_DPOPEN	EQU	$80				; - EEPROM Protection Control
+001f                    EEPROT_DPSbits	EQU	$1F				; - EEPROM Protection Size
+0000                    EEPROT_DPS_32	EQU	$00				; -- $0400 – $041F
+0001                    EEPROT_DPS_64	EQU	$01				; -- $0400 – $043F
+0002                    EEPROT_DPS_96	EQU	$02				; -- $0400 – $045F
+0003                    EEPROT_DPS_128	EQU	$03				; -- $0400 – $047F
+0004                    EEPROT_DPS_160	EQU	$04				; -- $0400 – $049F
+0005                    EEPROT_DPS_192	EQU	$05				; -- $0400 – $04BF
+0006                    EEPROT_DPS_224	EQU	$06				; -- $0400 – $04BF
+0007                    EEPROT_DPS_256	EQU	$07				; -- $0400 – $04BF
+0008                    EEPROT_DPS_288	EQU	$08				; -- $0400 – $04BF
+0009                    EEPROT_DPS_320	EQU	$09				; -- $0400 – $04BF
+000a                    EEPROT_DPS_352	EQU	$0A				; -- $0400 – $04BF
+000b                    EEPROT_DPS_384	EQU	$0B				; -- $0400 – $04BF
+000c                    EEPROT_DPS_416	EQU	$0C				; -- $0400 – $04BF
+000d                    EEPROT_DPS_448	EQU	$0D				; -- $0400 – $04BF
+000e                    EEPROT_DPS_480	EQU	$0E				; -- $0400 – $04BF
+000f                    EEPROT_DPS_512	EQU	$0F				; -- $0400 – $05FF
+                        ;
+010a                    FCCOB			EQU	$10A			; Flash Common Command Object Register
+010a                    FCCOBHI			EQU	$10A
+010b                    FCCOBLO			EQU	$10B
+0001                    FCCOB_EVAB		EQU	$01				; Erase Verify All Blocks
+0002                    FCCOB_EVB		EQU	$02				; Erase Verify Block
+0003                    FCCOB_EVPS		EQU	$03				; Erase Verify P-Flash Section
+0004                    FCCOB_RO		EQU	$04				; Read Once
+0006                    FCCOB_PP		EQU	$06				; Program P-Flash
+0007                    FCCOB_PO		EQU	$07				; Program Once
+0008                    FCCOB_EAB		EQU	$08				; Erase All Blocks
+0009                    FCCOB_EFB		EQU	$09				; Erase Flash Block
+000a                    FCCOB_EPS		EQU	$0A				; Erase P-Flash Sector
+000b                    FCCOB_UF		EQU	$0B				; Unsecure Flash
+000c                    FCCOB_VBAK		EQU	$0C				; Verify Backdoor Access Key
+000d                    FCCOB_SUML		EQU	$0D				; Set User Margin Level
+000e                    FCCOB_SFML		EQU	$0E				; Set Field Margin Level
+0010                    FCCOB_EVEES		EQU	$10				; Erase Verify EEPROM Section
+0011                    FCCOB_PEE		EQU	$11				; Program EEPROM
+0012                    FCCOB_EEES		EQU	$12				; Erase EEPROM Sector
+                        ;
+0110                    FOPT			EQU	$110			; Flash Option Register
+                        ;
+0001                    FCMD_VerifyALL			EQU	$01				; verify all blocks erased 
+0002                    FCMD_VerifyBlock		EQU	$02				; verify specific block erased
+0003                    FCMD_VerifyPsect		EQU	$03				; verify P Section erased
+0004                    FCMD_ReadOnce			EQU	$04				; read  dedicated 64 byte field that was programmed once
+0006                    FCMD_ProgramP			EQU	$06				; Program P section phrase
+0007                    FCMD_ProgramOnce		EQU	$07				; Program dedicated 64 byte P section (write once)
+0008                    FCMD_EraseAll			EQU	$08				; Erase all P and D blocks (must be un protected)
+0009                    FCMD_EraseBlock			EQU	$09				; Erase P or D block
+000a                    FCMD_EraseAllP			EQU	$0A				; Erase all P sector blocks
+000a                    FCMD_EraseSector		EQU	$0A				; Erase P sector
+000b                    FCMD_UnsecurePD			EQU	$0B				; Erase all P and D blocks then release security
+000c                    FCMD_VerBackdoor		EQU	$0C				; Verify Backdoor Access Key
+000d                    FCMD_SetUserMargin		EQU	$0D				; Set user Margin Level
+000e                    FCMD_SetFieldMargin		EQU	$0E				; Set Field Margin Level
+0010                    FCMD_EraseVerEEPROM		EQU	$10				; Erase Verify EEPROM Section
+0011                    FCMD_ProgramEEPROM		EQU	$11				; Program EEPROM
+0012                    FCMD_EraseEEPROMsector	EQU	$12				; Erase EEPROM Sector
+                        ;
+                        ;	INt Base
+                        ;
+0120                    IVBR	EQU		$120			; Interrupt module base ( not RESET nor COP )
+                        ;
+                        ;	CAN  $140 - $17F
+                        ;
+0240                    PTT		EQU		$240			; Port T Data							PORT T
+0241                    PTIT	EQU		$241			; INPUT State Register ( R Only)
+0242                    DDRT	EQU		$242			; Port T Data Direction
+0244                    PERT	EQU		$244			; PullUp Enable
+0245                    PPST	EQU		$245			; Pull Up/Down ( Falling Edge Sensitivity / Pull Up = 0 )
+                        ;
+                        ;	$246,$247 reserved
+                        ;
+0248                    PTS		EQU		$248			; I/O state								PORT S
+0249                    PTIS	EQU		$249			; INPUT State Register ( R Only)
+024a                    DDRS	EQU		$24A			; Data Direction
+024c                    PERS	EQU		$24C			; PullUp Enable
+024d                    PPSS	EQU		$24D			; Pull Up/Down ( Falling Edge Sensitivity / Pull Up = 0 )
+024e                    WOMS	EQU		$24E			; Wired-OR Mode Select
+                        ;
+024f                    PRR0	EQU		$24F			; Alternate Pin Routing
+                        ;
+0250                    PTM		EQU		$250			; I/O state								PORT M
+0251                    PTIM	EQU		$251			; INPUT State Register ( R Only)
+0252                    DDRM	EQU		$252			; Data Direction
+0254                    PERM	EQU		$254			; PullUp Enable
+0255                    PPSM	EQU		$255			; Pull Up/Down ( Falling Edge Sensitivity / Pull Up = 0 )
+0256                    WOMM	EQU		$256			; Wired-OR Mode Select
+                        ;
+0257                    PKGCR	EQU		$257			; Package Code Reg
+                        ;
+0258                    PTP		EQU		$258			; I/O state								PORT P
+0259                    PTIP	EQU		$259			; INPUT State Register ( R Only)
+025a                    DDRP	EQU		$25A			; Data Direction
+025c                    PERP	EQU		$25C			; PullUp Enable
+025d                    PPSP	EQU		$25D			; Pull Up/Down ( Falling Edge Sensitivity / Pull Up = 0 ) 
+025e                    PIEP	EQU		$25E			; Interrupt Enable
+025f                    PIFP	EQU		$25F			; Interrupt Flags
+                        ;
+                        ;	ANALOG Comparator - Not available on G96
+                        ;
+                        ;ACMPC	EQU		$260			; 
+                        ;ACMPS	EQU		$261			; 
+                        ;
+0268                    PTJ		EQU		$268			; Port J Data 							PORT J
+0269                    PTIJ	EQU		$269			; INPUT State Register ( R Only)
+026a                    DDRJ	EQU		$26A			; Data Direction
+026c                    PERJ	EQU		$26C			; PullUp Enable
+026d                    PPSJ	EQU		$26D			; Pull Up/Down ( Up = 0 )
+026e                    PIEJ	EQU		$26E			; Interrupt Enable
+026f                    PIFJ	EQU		$26F			; Interrupt Flags
+                        ;
+0270                    PT0AD	EQU		$270			; I/O state								PORT AD
+0271                    PT1AD	EQU		$271			; I/O state
+0272                    PTI0AD	EQU		$272			; INPUT State Register ( R Only)
+0273                    PTI1AD	EQU		$273			; INPUT State
+0274                    DDR0AD	EQU		$274			; Data Direction 8-11
+0275                    DDR1AD	EQU		$275			; Data Direction 0-7
+                        ;
+                        ;RVACTL	EQU		$276			; reference voltage attenuator - not available on G96
+                        ;
+0277                    PRR1	EQU		$277			; Alternate Pin Routing (QFP100 Only)
+                        ;
+0278                    PER0AD	EQU		$278			; PullUp Enable 8-11					PORT AD
+0279                    PER1AD	EQU		$279			; PullUp Enable 0-7
+027a                    PPS0AD	EQU		$27A			; Pull Up/Down 8-11 ( Up = 0 )
+027b                    PPS1AD	EQU		$27B			; Pull Up/Down 0-7 ( Up = 0 )
+027c                    PIE0AD	EQU		$27C			; Interrupt Enable 8-11
+027d                    PIE1AD	EQU		$27D			; Interrupt Enable 0-7
+027e                    PIF0AD	EQU		$27E			; Interrupt Flags 8-11
+027f                    PIF1AD	EQU		$27F			; Interrupt Flags 0-7
+                        ;
+                        ;	More Clock and Power Management $2F0 - $2FF
+                        ;
+02f1                    CPMULVCTLEQU	EQU	$2F1			; 
+02f2                    CPMUAPICTLEQU	EQU	$2F2			; 
+02f3                    CPMUACLKTREQU	EQU	$2F3			; 
+02f4                    CPMUAPIRHEQU	EQU	$2F4			; 
+02f5                    CPMUAPIRLEQU	EQU	$2F5			; 
+02f8                    IRCTRIMHEQU		EQU	$2F8			; 
+02f9                    IRCTRIMLEQU		EQU	$2F9			; 
+02fa                    CPMUOSCEQU		EQU	$2FA			; 
+02fb                    CPMUPROTEQU		EQU	$2FB			; 
+                        
+                        ; DAC Not available on G96
+                        
+                        ;
+                        ;	DAC 0 $3C0 - $3C7
+                        ;
+                        
+                        ;
+                        ;	DAC 1 $3C8 - $3CF
+                        ;
+                        
+                        
+                        
+                        
+                        
+2000                    ramSegment  EQU $2000
+c000                    prgSegment  EQU $C000
+                        
+2000                      ORG ramSegment
+                        
+2000                    sharedValue ds 1
+2001                    SoftTimer0 ds 2             ; LED Task
+2003                    SoftTimer1 ds 2             ; USR Task
+2005                    SoftTimer2 ds 2             ; Pattern Task
+                        
+2007                      REDEF ramSegment,*
+                        
+                        
+                        
+                        
+                        
+                        
+                        ;******************************************************************************
+                        ; Tasks
+                        ;******************************************************************************
+c000                      ORG prgSegment
+                        
+0000                    taskVector EQU 0      ; Create name for Dispatch Vector
+0000                    taskTimer EQU 0      ; Create name for Task Timer
+                        
+                        #include LEDv2_USRIN_handler.inc
+                        #include LEDv2_PATTERN_handler.inc
+                        #include LEDv2_LED_handler.inc
+                        
+                        
+                        ;******************************************************************************
+                        ;  Local Variables
+                        ;******************************************************************************
+                        
+2007                      ORG ramSegment
+                        
+2007                    tvLED ds 2
+2007                      REDEF taskVector,tvLED
+2001                      REDEF taskTimer,SoftTimer0
+                        
+                        
+                        
+                        
+                        
+                        
+2009                      REDEF ramSegment,*
+                        
+c000                      ORG prgSegment
+                        
+                        ;******************************************************************************
+                        ; Task Utilities
+                        ;******************************************************************************
+                        
+                        ;******************************************************************************
+                        ; Task Init
+                        ;******************************************************************************
+                        LED_Init:
+c000 3d                   RTS
+                        
+                        ;******************************************************************************
+                        ; Task Dispatch
+                        ;******************************************************************************
+                        LED_Update:
+c001 3d                   RTS
+                        
+                        ;******************************************************************************
+                        ; Sub Tasks
+                        ;******************************************************************************
+                        
+                        LED_t_Idle:
+c002 3d                   RTS
+                        
+                        ;******************************************************************************
+                        ; Interrupts
+                        ;******************************************************************************
+                        
+                        
+                        
+                        
+c003                      REDEF prgSegment,*
+                        
+                        
+                        
+                        ;******************************************************************************
+                        ; Init
+                        ;******************************************************************************
+c003                      ORG prgSegment
+                        
+                        PowerOn_Reset:
+                        
+c003 ff 3f ff             LDS $3FFF
+                        
+                        
+c006 16 c0 00             JSR LED_Init
+                        
+                        ;******************************************************************************
+                        ; Main
+                        ;******************************************************************************
+                        
+                        main:
+                        
+                        
+                        
+                        
+c009 20 fe                BRA main
+                        ;*****************************************************************************************
+                        ;	Interrupt Handler
+                        ;*****************************************************************************************
+                        
+                        RT_Interrupt
+c00b 0b                 	RTI
+                        
+                        ;*****************************************************************************************
+                        ;	Interrupts
+                        ;*****************************************************************************************
+                        ; Comment out the default interrupt vectors IF USED by tasks
+                        ;
+                        ACMP_Interrupt
+c00c 20 fe              	BRA	*
+                        OSC_Interrupt
+c00e 20 fe              	BRA	*
+                        PLL_Interrupt
+c010 20 fe              	BRA	*
+                        FLerr_Interrupt
+c012 20 fe              	BRA	*
+                        FLcmd_Interrupt
+c014 20 fe              	BRA	*
+                        CANwu_Interrupt
+c016 20 fe              	BRA	*
+                        CANerr_Interrupt
+c018 20 fe              	BRA	*
+                        CANrx_Interrupt
+c01a 20 fe              	BRA	*
+                        CANtx_Interrupt
+c01c 20 fe              	BRA	*
+                        PortP_Interrupt
+c01e 20 fe              	BRA	*
+                        LVI_Interrupt
+c020 20 fe              	BRA	*
+                        API_Interrupt
+c022 20 fe              	BRA	*
+                        ADCcmp_Interrupt
+c024 20 fe              	BRA	*
+                        PortAD_Interrupt
+c026 20 fe              	BRA	*
+                        Spurious_Interrupt
+c028 20 fe              	BRA	*
+                        PortJ_Interrupt
+c02a 20 fe              	BRA	*
+                        
+                        ADC_Interrupt
+c02c 0b                 	RTI
+                        
+                        
+                        SCI2_Interrupt
+c02d 0b                 	RTI
+                        
+                        SCI1_Interrupt
+c02e 0b                 	RTI
+                        
+                        SCI0_Interrupt
+c02f 0b                 	RTI
+                        
+                        SPI2_Interrupt
+c030 0b                 	RTI
+                        
+                        SPI1_Interrupt
+c031 0b                 	RTI
+                        
+                        SPI0_Interrupt
+c032 0b                 	RTI
+                        
+                        
+                        PAO_Interrupt
+c033 0b                 	RTI
+                        
+                        PAI_Interrupt
+c034 0b                 	RTI
+                        
+                        TC0_Interrupt
+c035 0b                 	RTI
+                        
+                        TC1_Interrupt
+c036 0b                 	RTI
+                        
+                        TC2_Interrupt
+c037 0b                 	RTI
+                        
+                        TC3_Interrupt
+c038 0b                 	RTI
+                        
+                        TC4_Interrupt
+c039 0b                 	RTI
+                        
+                        TC5_Interrupt
+c03a 0b                 	RTI
+                        
+                        TC6_Interrupt
+c03b 0b                 	RTI
+                        
+                        TC7_Interrupt
+c03c 0b                 	RTI
+                        
+                        TOv_Interrupt
+c03d 0b                 	RTI
+                        
+                        ;RT_Interrupt
+                        ;	RTI
+                        
+                        IRQ_Interrupt
+c03e 0b                 	RTI
+                        
+                        XIRQ_Interrupt
+c03f 0b                 	RTI
+                        
+                        SW_Interrupt
+c040 0b                 	RTI
+                        
+                        Trap_Interrupt
+c041 06 c0 03           	JMP	PowerOn_Reset
+                        
+                        COP_TimeoutReset
+c044 06 c0 03           	JMP	PowerOn_Reset
+                        
+                        COP_Clk_Reset
+c047 06 c0 03           	JMP	PowerOn_Reset
+                        
+                        
+c04a                    	REDEF	prgSegment,*
+                        
+                        ;*************************************************************************************************
+                        ;	Interrupt Vectors
+                        ;*************************************************************************************************
+                        
+ff80                    	ORG	INTERRUPT_DefaultBase
+                        
+ff80 c0 28              	DW	Spurious_Interrupt					; 80
+ff82 c0 26              	DW	PortAD_Interrupt					; 82
+ff84 c0 24              	DW	ADCcmp_Interrupt					; 84
+ff86 ff ff              	DW	$FFFF								; 86	reserved
+ff88 c0 22              	DW	API_Interrupt						; 88
+ff8a c0 20              	DW	LVI_Interrupt						; 8A
+ff8c ff ff              	DW	$FFFF								; 8C	reserved
+ff8e c0 1e              	DW	PortP_Interrupt						; 8E
+ff90 ff ff              	DW	$FFFF								; 90 - AE
+ff92 ff ff              	DW	$FFFF
+ff94 ff ff              	DW	$FFFF
+ff96 ff ff              	DW	$FFFF
+ff98 ff ff              	DW	$FFFF
+ff9a ff ff              	DW	$FFFF
+ff9c ff ff              	DW	$FFFF
+ff9e ff ff              	DW	$FFFF
+ffa0 ff ff              	DW	$FFFF
+ffa2 ff ff              	DW	$FFFF
+ffa4 ff ff              	DW	$FFFF
+ffa6 ff ff              	DW	$FFFF
+ffa8 ff ff              	DW	$FFFF
+ffaa ff ff              	DW	$FFFF
+ffac ff ff              	DW	$FFFF
+ffae ff ff              	DW	$FFFF
+ffb0 c0 1c              	DW	CANtx_Interrupt						; B0	CAN TX
+ffb2 c0 1a              	DW	CANrx_Interrupt						; B2	CAN RX
+ffb4 c0 18              	DW	CANerr_Interrupt					; B4	CAN Error
+ffb6 c0 16              	DW	CANwu_Interrupt						; B6	CAN WakeUp
+ffb8 c0 14              	DW	FLcmd_Interrupt						; B8	FLcmd_Interrupt
+ffba c0 12              	DW	FLerr_Interrupt						; BA	FLerr_Interrupt
+ffbc c0 30              	DW	SPI2_Interrupt						; BC	SPI2_Interrupt
+ffbe c0 31              	DW	SPI1_Interrupt						; BE	SPI1_Interrupt
+ffc0 ff ff              	DW	$FFFF								; C0
+ffc2 c0 2d              	DW	SCI2_Interrupt						; C2	SCI2_Interrupt
+ffc4 ff ff              	DW	$FFFF								; C4
+ffc6 c0 10              	DW	PLL_Interrupt						; C6
+ffc8 c0 0e              	DW	OSC_Interrupt						; C8
+ffca ff ff              	DW	$FFFF								; CA	reserved
+ffcc c0 0c              	DW	ACMP_Interrupt						; CC
+ffce c0 2a              	DW	PortJ_Interrupt						; CE
+ffd0 ff ff              	DW	$FFFF								; D0	reserved
+ffd2 c0 2c              	DW	ADC_Interrupt						; D2	ADC_Interrupt
+ffd4 c0 2e              	DW	SCI1_Interrupt						; D4	SCI1_Interrupt
+ffd6 c0 2f              	DW	SCI0_Interrupt						; D6	SCIX_Interrupt
+ffd8 c0 32              	DW	SPI0_Interrupt						; D8	SPI0_Interrupt
+ffda c0 34              	DW	PAI_Interrupt						; DA	PAI_Interrupt
+ffdc c0 33              	DW	PAO_Interrupt						; DC	PAO_Interrupt
+ffde c0 3d              	DW	TOv_Interrupt						; DE	TOv_Interrupt
+ffe0 c0 3c              	DW	TC7_Interrupt						; E0	TC7_Interrupt
+ffe2 c0 3b              	DW	TC6_Interrupt						; E2	TC6_Interrupt
+ffe4 c0 3a              	DW	TC5_Interrupt						; E4	TC5_Interrupt
+ffe6 c0 39              	DW	TC4_Interrupt						; E6	TC4_Interrupt
+ffe8 c0 38              	DW	TC3_Interrupt						; E8	TC3_Interrupt
+ffea c0 37              	DW	TC2_Interrupt						; EA	TC2_Interrupt
+ffec c0 36              	DW	TC1_Interrupt						; EC	TC1_Interrupt
+ffee c0 35              	DW	TC0_Interrupt						; EE	TC0_Interrupt
+fff0 c0 0b              	DW	RT_Interrupt						; F0	RT_Interrupt
+fff2 c0 3e              	DW	IRQ_Interrupt						; F2	IRQ_Interrupt
+fff4 c0 3f              	DW	XIRQ_Interrupt						; F4	XIRQ_Interrupt
+fff6 c0 40              	DW	SW_Interrupt						; F6	SW_Interrupt
+fff8 c0 41              	DW	Trap_Interrupt						; F8	Trap_Interrupt
+fffa c0 44              	DW	COP_TimeoutReset					; FA	COP_TimeoutReset
+fffc c0 47              	DW	COP_Clk_Reset						; FC	COP_Clk_Reset
+fffe c0 03              	DW	PowerOn_Reset						; FE	Bootloader Startup Vector
+Total errors: 0
+Total warnings: 0
+
