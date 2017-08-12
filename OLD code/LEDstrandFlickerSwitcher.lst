@@ -1,0 +1,682 @@
+
+as12  (v1.2)    absolute assembler for the Motorola CPU12
+Executed: Fri Aug 11 19:40:28 2017
+
+
+                        ;******************************************************************************
+                        ;*  Name of the program
+                        ;*  What it does
+                        ;*  How to assemble me- [as12 LEDstrandFlickerSwitcher.asm -LLEDstrandFlickerSwitcher.lst]
+                        ;******************************************************************************
+                        
+2000                      org $2000
+                        
+0258                    PTP       EQU $0258
+025a                    PTPDDR    EQU $025A
+                        
+0274                    PTADRW    EQU $0274
+0278                    DIPPULUP  EQU $0278
+007c                    ENAPULUP  EQU $007C
+                        
+0270                    PTAD      EQU $0270
+0271                    DIPSWITCH EQU $0271
+                        
+0008                    _CLK      EQU #$08
+0004                    _DATA     EQU #$04
+000c                    _BOTH     EQU #$0C
+                        
+                        
+000e                    _LEDCOUNT  EQU #14            ;number of LEDs
+                        
+                        
+2000                    intensity ds 32
+2020                    blue      ds 32
+2040                    green     ds 32
+2060                    red       ds 32
+                        
+2080                    waiter    ds 1
+2081                    waiter2   ds 1
+2082                    waiter3   ds 1
+                        
+2083                    pIndex    ds 1
+2084                    pIndex2   ds 1
+2085                    pIndex3   ds 1
+                        
+2086                    AmountB   ds 1
+2087                    AmountG   ds 1
+2088                    AmountR   ds 1
+2089                    AmountB2  ds 1
+208a                    AmountG2  ds 1
+208b                    AmountR2  ds 1
+                        
+208c                    PatternSelect ds 1
+208d                    PatternSelect2 ds 1
+                        
+208e                    OneSecCnt ds 1
+                        
+208f                    SoftTimer0 ds 2
+2091                    SoftTimer1 ds 2
+                        
+0240                    USRIN_Port  EQU $0240
+0242                    USRIN_DDR   EQU $0242
+0244                    USRIN_PUPEN EQU $0244
+                        
+0002                    USRIN_bit1  EQU %%00000010
+0008                    USRIN_bit2  EQU %%00001000
+                        
+                        ;******************************************************************************
+                        ;   Utilities
+                        ;******************************************************************************
+                        
+c000                      org $c000
+                        
+                        timer0:
+                        
+c000 18 03 00 30 20 8f    MOVW #$0030 SoftTimer0      ;100 cycles w/ 10ms = 1 second
+                        timer0_loop
+c006 fe 20 8f             LDX SoftTimer0
+c009 26 fb                BNE timer0_loop
+                        timer0_exit
+c00b 3d                   RTS
+                        
+                        
+                        wait:
+                        
+c00c 18 0b 03 20 82       MOVB #$03 waiter3
+                        timerloop3:
+c011 18 0b ff 20 81       MOVB #$FF waiter2
+                        timerloop2:
+c016 18 0b ff 20 80       MOVB #$FF waiter
+                        timerloop:
+c01b 73 20 80             DEC waiter
+c01e 26 fb                BNE timerloop
+c020 73 20 81             DEC waiter2
+c023 26 f1                BNE timerloop2
+c025 73 20 82             DEC waiter3
+c028 26 e7                BNE timerloop3
+c02a 3d                   RTS
+                        
+                        
+                        setData:
+                        
+c02b 25 02                BCS dataOf1                 ;makes it so input 0 equals
+c02d 24 06                BCC dataOf0                 ;data of 0 and vise versa
+                        dataOf1:
+c02f 1c 02 70 04          BSET PTAD #_DATA
+c033 20 04                BRA clkRise
+                        dataOf0:
+c035 1d 02 70 04          BCLR PTAD #_DATA
+                        clkRise:
+c039 1c 02 70 08          BSET PTAD #_CLK             ;rising edge of clock _/
+c03d 1d 02 70 08          BCLR PTAD #_CLK             ;falling edge of clock \_
+c041 3d                   RTS
+                        
+                        
+                        Process_Byte:
+                        
+c042 ce 00 08             LDX #$08
+                        cycle8:
+c045 48                   ASLA
+c046 16 c0 2b             JSR setData
+c049 04 35 f9             DBNE X, cycle8
+c04c 3d                   RTS
+                        
+                        
+                        ;******************************************************************************
+                        ; Task 1 - LED Processing
+                        ;******************************************************************************
+                        
+                        ;==============================================================================
+                        ; LED Utilities
+                        
+                        Start_Frame:
+                        
+c04d 86 00                LDAA #$00
+c04f 16 c0 42             JSR Process_Byte
+c052 86 00                LDAA #$00
+c054 16 c0 42             JSR Process_Byte
+c057 86 00                LDAA #$00
+c059 16 c0 42             JSR Process_Byte
+c05c 86 00                LDAA #$00
+c05e 16 c0 42             JSR Process_Byte
+c061 3d                   RTS
+                        
+                        
+                        LED_SendIntensity:
+                        
+c062 cd 20 00             LDY #intensity                        ;should probably or this with #$E0
+c065 a6 ed                LDAA B,Y
+c067 16 c0 42             JSR Process_Byte
+c06a 3d                   RTS
+                        
+                        
+                        LED_SendBlue:
+                        
+c06b cd 20 20             LDY #blue
+c06e a6 ed                LDAA B,Y
+c070 16 c0 42             JSR Process_Byte
+c073 3d                   RTS
+                        
+                        
+                        LED_SendGreen:
+                        
+c074 cd 20 40             LDY #green
+c077 a6 ed                LDAA B,Y
+c079 16 c0 42             JSR Process_Byte
+c07c 3d                   RTS
+                        
+                        
+                        LED_SendRed:
+                        
+c07d cd 20 60             LDY #red
+c080 a6 ed                LDAA B,Y
+c082 16 c0 42             JSR Process_Byte
+c085 3d                   RTS
+                        
+                        
+                        End_Frame:
+                        
+c086 86 ff                LDAA #$FF
+c088 16 c0 42             JSR Process_Byte
+c08b 86 00                LDAA #$00
+c08d 16 c0 42             JSR Process_Byte
+c090 86 00                LDAA #$00
+c092 16 c0 42             JSR Process_Byte
+c095 86 00                LDAA #$00
+c097 16 c0 42             JSR Process_Byte
+c09a 86 00                LDAA #$00
+c09c 16 c0 42             JSR Process_Byte
+c09f 86 00                LDAA #$00
+c0a1 16 c0 42             JSR Process_Byte
+c0a4 86 00                LDAA #$00
+c0a6 16 c0 42             JSR Process_Byte
+c0a9 86 00                LDAA #$00
+c0ab 16 c0 42             JSR Process_Byte
+c0ae 3d                   RTS
+                        
+                        ;==============================================================================
+                        ; Task
+                        
+                        LED_Process:
+                        
+c0af 16 c0 4d             JSR Start_Frame
+c0b2 c6 00                LDAB #00                    ;index used in utilities
+                        LED_CLK
+c0b4 16 c0 62             JSR LED_SendIntensity
+c0b7 16 c0 6b             JSR LED_SendBlue
+c0ba 16 c0 74             JSR LED_SendGreen
+c0bd 16 c0 7d             JSR LED_SendRed
+c0c0 52                   INCB
+c0c1 c1 0e                CMPB #_LEDCOUNT
+c0c3 26 ef                BNE LED_CLK
+c0c5 16 c0 86             JSR End_Frame
+                        
+                        LED_exit
+c0c8 3d                   RTS
+                        
+                        
+                        
+                        
+                        ;******************************************************************************
+                        ; Task 2 - Input
+                        ;******************************************************************************
+                        
+                        ;==============================================================================
+                        ; Input Utilities
+                        
+                        INPUT_Process:
+                        
+                          ; LDAA USRIN_Port
+                          ; BITA
+c0c9 1e 02 40 02 13       BRSET USRIN_Port,#USRIN_bit1,INPUT_Select2
+c0ce 1e 02 40 08 02       BRSET USRIN_Port,#USRIN_bit2,INPUT_Select1
+c0d3 20 1d                BRA INPUT_Select3
+                        
+                        INPUT_Select1
+                        ;  BRSET USRIN_Port,#USRIN_bit1,INPUT_Select2
+c0d5 18 0b 03 20 8e       MOVB #$03, OneSecCnt
+c0da 18 0b 01 20 8c       MOVB #%%00000001, PatternSelect
+c0df 20 18                BRA INPUT_exit
+                        INPUT_Select2
+c0e1 1e 02 40 08 13       BRSET USRIN_Port,#USRIN_bit2,INPUT_Idle
+c0e6 18 0b 03 20 8e       MOVB #$03, OneSecCnt
+c0eb 18 0b 02 20 8c       MOVB #%%00000010, PatternSelect
+c0f0 20 07                BRA INPUT_exit
+                        INPUT_Select3
+c0f2 18 0b 20 20 8c       MOVB #%%00100000, PatternSelect
+c0f7 20 00                BRA INPUT_exit
+                        INPUT_Idle
+                        ;  MOVB #%%00100000, PatternSelect
+                        INPUT_exit
+c0f9 3d                   RTS
+                        
+                        
+                        ;==============================================================================
+                        ; Task
+                        
+                        
+                        
+                        ; DIP_Process:
+                        ;
+                        ;   BRSET DIPSWITCH,%%10000000,DIP_Tst2
+                        ;   MOVB #%%10000000, PatternSelect
+                        ;   BRA   DIP_exit
+                        ; DIP_Tst2
+                        ;   BRSET DIPSWITCH,%%01000000,DIP_Tst3
+                        ;   MOVB #%%01000000, PatternSelect
+                        ;   BRA   DIP_exit
+                        ; DIP_Tst3
+                        ;   BRSET DIPSWITCH,%%00100000,DIP_Tst4
+                        ;   MOVB #%%00100000, PatternSelect
+                        ;   BRA   DIP_exit
+                        ; DIP_Tst4
+                        ;   BRSET DIPSWITCH,%%00010000,DIP_Tst5
+                        ;   MOVB #%%00010000, PatternSelect
+                        ;   BRA   DIP_exit
+                        ; DIP_Tst5
+                        ;   BRSET DIPSWITCH,%%00001000,DIP_Tst6
+                        ;   MOVB #%%00001000, PatternSelect
+                        ;   BRA   DIP_exit
+                        ; DIP_Tst6  ;blink blue every other
+                        ;   BRSET DIPSWITCH,%%00000100,DIP_Tst7
+                        ;   MOVB #%%00000100, PatternSelect
+                        ;   BRA   DIP_exit
+                        ; DIP_Tst7  ;blink blue every other with green
+                        ;   BRSET DIPSWITCH,%%00000010,DIP_Tst8
+                        ;   MOVB #$04, OneSecCnt
+                        ;   MOVB #%%00000010, PatternSelect
+                        ;   BRA   DIP_exit
+                        ; DIP_Tst8  ;blink blue every other with red
+                        ;   BRSET DIPSWITCH,%%00000001,DIP_default
+                        ;   MOVB #$04, OneSecCnt
+                        ;   MOVB #%%00000001, PatternSelect
+                        ;   BRA   DIP_exit
+                        ; DIP_default
+                        ; ;  JSR DIP_Default
+                        ;
+                        ; DIP_exit
+                        ;  RTS
+                        
+                        
+                        
+                        
+                        ;******************************************************************************
+                        ; Task 3 - Patterns
+                        ;******************************************************************************
+                        
+                        ;==============================================================================
+                        ; Pattern Utilities
+                        
+                        Pattern_TurnAllBlue:
+                        
+c0fa c6 00                LDAB #$00
+                        Pattern_AllBLoop
+c0fc cd 20 00             LDY #intensity
+c0ff 18 08 ed ff          MOVB #$FF, B,Y
+c103 cd 20 20             LDY #blue
+c106 18 08 ed ff          MOVB #$FF, B,Y
+c10a cd 20 40             LDY #green
+c10d 18 08 ed 00          MOVB #$00, B,Y
+c111 cd 20 60             LDY #red
+c114 18 08 ed 00          MOVB #$00, B,Y
+c118 52                   INCB
+c119 c1 0e                CMPB #_LEDCOUNT
+c11b 26 df                BNE Pattern_AllBLoop
+c11d 3d                   RTS
+                        
+                        
+                        Pattern_TurnAllGreen:
+                        
+c11e c6 00                LDAB #$00
+                        Pattern_AllGLoop
+c120 cd 20 00             LDY #intensity
+c123 18 08 ed ff          MOVB #$FF, B,Y
+c127 cd 20 20             LDY #blue
+c12a 18 08 ed 00          MOVB #$00, B,Y
+c12e cd 20 40             LDY #green
+c131 18 08 ed ff          MOVB #$FF, B,Y
+c135 cd 20 60             LDY #red
+c138 18 08 ed 00          MOVB #$00, B,Y
+c13c 52                   INCB
+c13d c1 0e                CMPB #_LEDCOUNT
+c13f 26 df                BNE Pattern_AllGLoop
+c141 3d                   RTS
+                        
+                        
+                        Pattern_TurnAllRed:
+                        
+c142 c6 00                LDAB #$00
+                        Pattern_AllRLoop
+c144 cd 20 00             LDY #intensity
+c147 18 08 ed ff          MOVB #$FF, B,Y
+c14b cd 20 20             LDY #blue
+c14e 18 08 ed 00          MOVB #$00, B,Y
+c152 cd 20 40             LDY #green
+c155 18 08 ed 00          MOVB #$00, B,Y
+c159 cd 20 60             LDY #red
+c15c 18 08 ed ff          MOVB #$FF, B,Y
+c160 52                   INCB
+c161 c1 0e                CMPB #_LEDCOUNT
+c163 26 df                BNE Pattern_AllRLoop
+c165 3d                   RTS
+                        
+                        
+                        Pattern_TurnAllWhite:
+                        
+c166 c6 00                LDAB #$00
+                        Pattern_WhiteLoop
+c168 cd 20 00             LDY #intensity
+c16b 18 08 ed ff          MOVB #$FF, B,Y
+c16f cd 20 20             LDY #blue
+c172 18 08 ed ff          MOVB #$FF, B,Y
+c176 cd 20 40             LDY #green
+c179 18 08 ed ff          MOVB #$FF, B,Y
+c17d cd 20 60             LDY #red
+c180 18 08 ed ff          MOVB #$FF, B,Y
+c184 52                   INCB
+c185 c1 0e                CMPB #_LEDCOUNT
+c187 26 df                BNE Pattern_WhiteLoop
+c189 3d                   RTS
+                        
+                        
+                        Pattern_TurnAllOff:
+                        
+c18a c6 00                LDAB #$00
+                        Pattern_OffLoop
+c18c cd 20 00             LDY #intensity
+c18f 18 08 ed e0          MOVB #$E0, B,Y
+c193 cd 20 20             LDY #blue
+c196 18 08 ed 00          MOVB #$00, B,Y
+c19a cd 20 40             LDY #green
+c19d 18 08 ed 00          MOVB #$00, B,Y
+c1a1 cd 20 60             LDY #red
+c1a4 18 08 ed 00          MOVB #$00, B,Y
+c1a8 52                   INCB
+c1a9 c1 0e                CMPB #_LEDCOUNT
+c1ab 26 df                BNE Pattern_OffLoop
+c1ad 3d                   RTS
+                        
+                        
+                        Pattern_Default:
+                        
+c1ae c6 00                LDAB #$00
+                        Pattern_DefaultLoop
+c1b0 cd 20 00             LDY #intensity
+c1b3 18 08 ed e1          MOVB #$E1, B,Y
+c1b7 cd 20 20             LDY #blue
+c1ba 18 08 ed ff          MOVB #$FF, B,Y
+c1be cd 20 40             LDY #green
+c1c1 18 08 ed ff          MOVB #$FF, B,Y
+c1c5 cd 20 60             LDY #red
+c1c8 18 08 ed ff          MOVB #$FF, B,Y
+c1cc 52                   INCB
+c1cd c1 0e                CMPB #_LEDCOUNT
+c1cf 26 df                BNE Pattern_DefaultLoop
+c1d1 3d                   RTS
+                        
+                        
+                        Pattern_TstPattern:
+                        
+c1d2 f6 20 85             LDAB pIndex3
+c1d5 c4 0f                ANDB #$0F
+c1d7 cd 20 20             LDY #blue
+c1da 18 08 ed ff          MOVB #$FF, B,Y
+c1de cd 20 40             LDY #green
+c1e1 18 08 ed 00          MOVB #$00, B,Y
+c1e5 cd 20 60             LDY #red
+c1e8 18 08 ed 00          MOVB #$00, B,Y
+c1ec cd 20 00             LDY #intensity
+c1ef 18 00 ed ff e0       MOVW #$FFE0, B,Y
+c1f4 72 20 85             INC pIndex3
+c1f7 16 c0 00             JSR timer0                  ;1s timer
+                        ; JSR wait
+                        ; JSR wait
+                        ; JSR wait
+c1fa 3d                   RTS
+                        
+                        
+                        Pattern_Eother:
+                        
+c1fb c6 00                LDAB #$00
+                        Pattern_EotherLoop
+c1fd b6 20 83             LDAA pIndex
+c200 85 01                BITA #$01
+c202 27 24                BEQ Pattern_EotherOff
+                        Pattern_EotherOn
+c204 cd 20 00             LDY #intensity
+c207 18 08 ed ff          MOVB #$FF, B,Y
+c20b cd 20 20             LDY #blue
+c20e 18 09 ed 20 86       MOVB AmountB, B,Y
+c213 cd 20 40             LDY #green
+c216 18 09 ed 20 87       MOVB AmountG, B,Y
+c21b cd 20 60             LDY #red
+c21e 18 09 ed 20 88       MOVB AmountR, B,Y
+c223 72 20 83             INC pIndex
+c226 20 22                BRA Pattern_EotherLoopEnd
+                        Pattern_EotherOff
+c228 cd 20 00             LDY #intensity              ;currently the same as DIP_TurnAllOff
+c22b 18 08 ed ff          MOVB #$FF, B,Y              ;but is able to change to diff color if need be
+c22f cd 20 20             LDY #blue
+c232 18 09 ed 20 89       MOVB AmountB2, B,Y
+c237 cd 20 40             LDY #green
+c23a 18 09 ed 20 8a       MOVB AmountG2, B,Y
+c23f cd 20 60             LDY #red​
+c242 18 09 ed 20 8b       MOVB AmountR2, B,Y
+c247 72 20 83             INC pIndex
+                        Pattern_EotherLoopEnd
+c24a 52                   INCB
+c24b c1 0e                CMPB #_LEDCOUNT
+c24d 26 ae                BNE Pattern_EotherLoop
+                        ; JSR wait
+                        ; JSR wait
+                        ; JSR wait
+                        Pattern_Eother_exit
+c24f 3d                   RTS
+                        
+                        
+                        Pattern_Blink:
+                        
+c250 b6 20 84             LDAA pIndex2
+c253 85 01                BITA #01
+c255 27 08                BEQ Pattern_BlinkOff
+                        Pattern_BlinkOn
+                          ;must specify before the (AmountR/G/B) amounts
+c257 16 c1 fb             JSR Pattern_Eother
+c25a 72 20 84             INC pIndex2
+c25d 20 15                BRA Pattern_Blink_exit
+                        Pattern_BlinkOff
+c25f 18 0b 00 20 86       MOVB #$00, AmountB
+c264 18 0b 00 20 87       MOVB #$00, AmountG
+c269 18 0b 00 20 88       MOVB #$00, AmountR
+c26e 16 c1 fb             JSR Pattern_Eother
+                        ;  JSR Pattern_TurnAllOff
+c271 72 20 84             INC pIndex2
+                        Pattern_Blink_exit
+c274 16 c0 00             JSR timer0                  ;1s timer
+                        ;  JSR wait
+                        ;  JSR wait
+c277 3d                   RTS
+                        
+                        
+                        Pattern_BlinkBlue:
+                        
+c278 18 0b ff 20 86       MOVB #$FF, AmountB
+c27d 18 0b 00 20 87       MOVB #$00, AmountG
+c282 18 0b 00 20 88       MOVB #$00, AmountR
+c287 18 0b 00 20 89       MOVB #$00, AmountB2         ;these ones used for the "every other" color
+c28c 18 0b 00 20 8a       MOVB #$00, AmountG2
+c291 18 0b 00 20 8b       MOVB #$00, AmountR2
+c296 16 c2 50             JSR Pattern_Blink
+                        Pattern_BBlue_exit
+c299 3d                   RTS
+                        
+                        
+                        Pattern_BlinkBlueWGreen:
+                        
+c29a 18 0b ff 20 86       MOVB #$FF, AmountB
+c29f 18 0b 00 20 87       MOVB #$00, AmountG
+c2a4 18 0b 00 20 88       MOVB #$00, AmountR
+c2a9 18 0b 00 20 89       MOVB #$00, AmountB2         ;these ones used for the "every other" color
+c2ae 18 0b ff 20 8a       MOVB #$FF, AmountG2
+c2b3 18 0b 00 20 8b       MOVB #$00, AmountR2
+                        Pattern_BBlueWGreenLoop
+c2b8 16 c2 50             JSR Pattern_Blink
+c2bb 73 20 8e             DEC OneSecCnt
+c2be 26 05                BNE Pattern_BBlueWGreen_exit
+c2c0 18 0b 04 20 8c       MOVB #%%00000100, PatternSelect
+                        Pattern_BBlueWGreen_exit
+c2c5 3d                   RTS
+                        
+                        
+                        Pattern_BlinkBlueWRed:
+                        
+c2c6 18 0b ff 20 86       MOVB #$FF, AmountB
+c2cb 18 0b 00 20 87       MOVB #$00, AmountG
+c2d0 18 0b 00 20 88       MOVB #$00, AmountR
+c2d5 18 0b 00 20 89       MOVB #$00, AmountB2         ;these ones used for the "every other" color
+c2da 18 0b 00 20 8a       MOVB #$00, AmountG2
+c2df 18 0b ff 20 8b       MOVB #$FF, AmountR2
+                        Pattern_BBlueWRedLoop
+c2e4 16 c2 50             JSR Pattern_Blink
+c2e7 73 20 8e             DEC OneSecCnt
+c2ea 26 05                BNE Pattern_BBlueWRed_exit
+c2ec 18 0b 04 20 8c       MOVB #%%00000100, PatternSelect
+                        Pattern_BBlueWRed_exit
+c2f1 3d                   RTS
+                        
+                        
+                        ;==============================================================================
+                        ; Task
+                        
+                        Pattern_Process:
+                        
+c2f2 1f 20 8c 80 07       BRCLR PatternSelect,%%10000000,Pattern_Tst2
+c2f7 16 c0 fa             JSR Pattern_TurnAllBlue
+c2fa 18 20 00 60          LBRA   Pattern_exit
+                        Pattern_Tst2
+c2fe 1f 20 8c 40 07       BRCLR PatternSelect,%%01000000,Pattern_Tst3
+c303 16 c1 1e             JSR Pattern_TurnAllGreen
+c306 18 20 00 54          LBRA   Pattern_exit
+                        Pattern_Tst3
+c30a 1f 20 8c 20 07       BRCLR PatternSelect,%%00100000,Pattern_Tst4
+c30f 16 c1 42             JSR Pattern_TurnAllRed
+c312 18 20 00 48          LBRA   Pattern_exit
+                        Pattern_Tst4
+c316 1f 20 8c 10 07       BRCLR PatternSelect,%%00010000,Pattern_Tst5
+c31b 16 c1 66             JSR Pattern_TurnAllWhite
+c31e 18 20 00 3c          LBRA   Pattern_exit
+                        Pattern_Tst5
+c322 1f 20 8c 08 07       BRCLR PatternSelect,%%00001000,Pattern_Tst6
+c327 16 c1 8a             JSR Pattern_TurnAllOff
+c32a 18 20 00 30          LBRA   Pattern_exit
+                        Pattern_Tst6
+c32e 1f 20 8c 04 07       BRCLR PatternSelect,%%00000100,Pattern_Tst7
+c333 16 c2 78             JSR Pattern_BlinkBlue
+c336 18 20 00 24          LBRA   Pattern_exit
+                        Pattern_Tst7
+c33a 1f 20 8c 02 07       BRCLR PatternSelect,%%00000010,Pattern_Tst8
+c33f 16 c2 9a             JSR Pattern_BlinkBlueWGreen
+c342 18 20 00 18          LBRA   Pattern_exit
+                        Pattern_Tst8
+c346 1f 20 8c 01 07       BRCLR PatternSelect,%%00000001,Pattern_Tst9
+c34b 16 c2 c6             JSR Pattern_BlinkBlueWRed
+c34e 18 20 00 0c          LBRA   Pattern_exit
+                        Pattern_Tst9
+c352 1f 20 8d 01 07       BRCLR PatternSelect2,%%00000001,Pattern_Tst_Default
+c357 16 c1 d2             JSR Pattern_TstPattern
+c35a 18 20 00 00          LBRA   Pattern_exit
+                        Pattern_Tst_Default
+                        
+                        Pattern_exit
+c35e 3d                   RTS
+                        
+                        
+                        
+                        ;******************************************************************************
+                        ; Interrupt Handlers
+                        ;******************************************************************************
+                        RTIHandler:       ; FFF0
+                        
+c35f 4c 37 80             BSET $0037 #$80             ;reset the interrupt
+                        
+c362 b6 02 58             LDAA PTP
+c365 88 20                EORA #$20                   ;used w/ scope to configuring timer time(10ms)
+c367 7a 02 58             STAA PTP
+                        RTIH_00000
+c36a fe 20 8f             LDX SoftTimer0
+c36d 27 04                BEQ RTIH_00001
+c36f 09                   DEX
+c370 7e 20 8f             STX SoftTimer0
+                        RTIH_00001
+c373 fe 20 91             LDX SoftTimer1
+c376 27 04                BEQ RTIH_00002
+c378 09                   DEX
+c379 7e 20 91             STX SoftTimer1
+                        RTIH_00002
+c37c 0b                   RTI
+                        
+                        DoNothing:        ; FFF2
+c37d 0b                   RTI
+                        
+                        
+                        ;******************************************************************************
+                        ; Init
+                        ;******************************************************************************
+                        
+                        init:
+                        
+c37e cf 3f ff             LDS #$3FFF                  ;load stack pointer
+                        
+c381 18 0b 0c 02 74       MOVB #_BOTH PTADRW          ;sets data and clock outputs to ON
+                        
+c386 18 03 0f ff 02 78    MOVW #$0FFF DIPPULUP        ;sets the pull enable registers with $OFFF
+c38c 18 03 00 ff 00 7c    MOVW #$00FF ENAPULUP        ;sets the register for enabling pull ups?
+                        
+c392 1c 02 44 0a          BSET USRIN_PUPEN,(USRIN_bit1|USRIN_bit2)
+                        
+c396 1d 02 70 04          BCLR PTAD #_DATA            ;default low
+c39a a7                   NOP
+c39b 1d 02 70 08          BCLR PTAD #_CLK
+                        
+c39f 18 0b 00 20 8c       MOVB #$00 PatternSelect     ;resets pattern selecter
+c3a4 18 0b 00 20 8d       MOVB #$00 PatternSelect2    ;resets pattern selecter
+                        
+c3a9 18 0b 19 00 3b       MOVB #$19 $003B             ;sets time for timer interrupt
+c3ae 4c 38 80             BSET $0038 #$80             ;enable a timer interrupt
+                        
+c3b1 1c 02 5a 20          BSET PTPDDR #$20
+                        
+c3b5 10 ef                CLI
+c3b7 16 c0 00             JSR timer0
+                        ;******************************************************************************
+                        ; Mianline
+                        ;******************************************************************************
+                        
+                        main:
+                        
+                        ;  JSR DIP_Process
+c3ba 16 c0 c9             JSR INPUT_Process
+c3bd 16 c2 f2             JSR Pattern_Process
+c3c0 16 c0 af             JSR LED_Process
+c3c3 20 f5                BRA main
+                        
+                        
+                        ;******************************************************************************
+                        ; Interrupts
+                        ;******************************************************************************
+                        
+                        
+                        
+fff0                      org $fff0
+                        
+fff0 c3 5f                dw RTIHandler      ; FFF0
+fff2 c3 7d                dw DoNothing       ; FFF2
+fff4 c3 7d                dw DoNothing       ; FFF4
+fff6 c3 7d                dw DoNothing       ; FFF6
+fff8 c3 7d                dw DoNothing       ; FFF8
+fffa c3 7d                dw DoNothing       ; FFFA
+fffc c3 7d                dw DoNothing       ; FFFC
+fffe c3 7e                dw init            ; FFFE
+Total errors: 0
+Total warnings: 0
+
