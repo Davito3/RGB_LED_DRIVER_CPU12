@@ -12,11 +12,11 @@ prgSegment  EQU $C000
   ORG ramSegment
 
 sharedValue ds 1
-SoftTimer0 ds 2             ; LED Task
-SoftTimer1 ds 2             ; Pattern Task
-SoftTimer2 ds 2             ; USR Task
+SoftTimer0 ds 2               ; LED Task
+SoftTimer1 ds 2               ; Pattern Task
+SoftTimer2 ds 2               ; USR Task
 
-  REDEF ramSegment,*
+REDEF ramSegment,*
 
 
 ;******************************************************************************
@@ -24,8 +24,8 @@ SoftTimer2 ds 2             ; USR Task
 ;******************************************************************************
   ORG prgSegment
 
-taskVector EQU 0      ; Create name for Dispatch Vector
-taskTimer EQU 0      ; Create name for Task Timer
+taskVector EQU 0              ; Create name for Dispatch Vector
+taskTimer EQU 0               ; Create name for Task Timer
 
 #include LEDv2_USRIN_handler.inc
 #include LEDv2_PATTERN_handler.inc
@@ -68,7 +68,7 @@ main:
 RT_Interrupt
   BSET $0037 #$80             ;reset the interrupt
 
-  LDAA 
+  LDAA
 
 
 

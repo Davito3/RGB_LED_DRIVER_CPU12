@@ -1,0 +1,572 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+tvUSRIN	LEDv2_USRIN_handler.inc	/^tvUSRIN ds 2$/;"	d
+USRIN_Init	LEDv2_USRIN_handler.inc	/^USRIN_Init:$/;"	l
+USRIN_Update	LEDv2_USRIN_handler.inc	/^USRIN_Update:$/;"	l
+USRIN_t_Idle	LEDv2_USRIN_handler.inc	/^USRIN_t_Idle:$/;"	l
+tvLED	LEDv2_LED_handler.inc	/^tvLED ds 2$/;"	d
+LED_Init	LEDv2_LED_handler.inc	/^LED_Init:$/;"	l
+LED_Update	LEDv2_LED_handler.inc	/^LED_Update:$/;"	l
+LED_t_Idle	LEDv2_LED_handler.inc	/^LED_t_Idle:$/;"	l
+RAM_Start	MC9S12G96_ChipDefinition.inc	/^RAM_Start				          EQU	$2000					               ; 8K RAM Memory Map$/;"	d
+RAM_End	MC9S12G96_ChipDefinition.inc	/^RAM_End					          EQU	$3FFF					               ; last byte of RAM$/;"	d
+RAM_Length	MC9S12G96_ChipDefinition.inc	/^RAM_Length				        EQU	RAM_End-RAM_Start+1		       ; size of RAM section$/;"	d
+EEPROM_Start	MC9S12G96_ChipDefinition.inc	/^EEPROM_Start			        EQU	$0400				                 ; 3K EEPROM Memory Map$/;"	d
+EEPROM_End	MC9S12G96_ChipDefinition.inc	/^EEPROM_End				        EQU	$0FFF				                 ; last byte of EEPROM$/;"	d
+EEPROM_Length	MC9S12G96_ChipDefinition.inc	/^EEPROM_Length			        EQU	EEPROM_End-EEPROM_Start+1$/;"	d
+EEPROM_SectorLen	MC9S12G96_ChipDefinition.inc	/^EEPROM_SectorLen		      EQU	4						                 ; a minimum of 4 bytes is erased, 2 bytes burned$/;"	d
+FLASH_UnPagedStart	MC9S12G96_ChipDefinition.inc	/^FLASH_UnPagedStart	      EQU	$C000				                 ; Unpaged FLASH segment - always in Map High Mem$/;"	d
+FLASH_UnPagedEnd	MC9S12G96_ChipDefinition.inc	/^FLASH_UnPagedEnd		      EQU	$FFFF$/;"	d
+FLASH_UnPagedLowStart	MC9S12G96_ChipDefinition.inc	/^FLASH_UnPagedLowStart     EQU	$4000$/;"	d
+FLASH_UnPagedLowEnd	MC9S12G96_ChipDefinition.inc	/^FLASH_UnPagedLowEnd		    EQU	$7FFF$/;"	d
+FLASH_PagedStart	MC9S12G96_ChipDefinition.inc	/^FLASH_PagedStart		      EQU	$8000				                 ; FLASH Memory Paged Window$/;"	d
+FLASH_PagedEnd	MC9S12G96_ChipDefinition.inc	/^FLASH_PagedEnd			      EQU	$BFFF				                 ; last buyte of FLASH paged window$/;"	d
+FLASH_NumPages	MC9S12G96_ChipDefinition.inc	/^FLASH_NumPages			      EQU	4					                   ; 4 pages of 16K each: 64K$/;"	d
+FLASH_SectorLen	MC9S12G96_ChipDefinition.inc	/^FLASH_SectorLen			      EQU	512$/;"	d
+FLASH_PhraseLen	MC9S12G96_ChipDefinition.inc	/^FLASH_PhraseLen			      EQU	8$/;"	d
+INTERRUPT_DefaultBase	MC9S12G96_ChipDefinition.inc	/^INTERRUPT_DefaultBase	    EQU	$FF80			                   ; default int vector base - unpaged segment$/;"	d
+INTERRUPT_Reset	MC9S12G96_ChipDefinition.inc	/^INTERRUPT_Reset			      EQU	$FFFE			                   ; unmaskable, non-relocatable vectors$/;"	d
+INTERRUPT_Clock	MC9S12G96_ChipDefinition.inc	/^INTERRUPT_Clock			      EQU	$FFFC$/;"	d
+INTERRUPT_COP	MC9S12G96_ChipDefinition.inc	/^INTERRUPT_COP			        EQU	$FFFA$/;"	d
+MODE	MC9S12G96_ChipDefinition.inc	/^MODE			                EQU	$0B					                 ; Memory Map Control$/;"	d
+MODE_MODC	MC9S12G96_ChipDefinition.inc	/^MODE_MODC		              EQU	%10000000			                ;$/;"	d
+PUCR	MC9S12G96_ChipDefinition.inc	/^PUCR			                EQU	$0C					                 ; Pull Up Control for A,B,C,D,E,BKGND ports$/;"	d
+PUCR_BKPUE	MC9S12G96_ChipDefinition.inc	/^PUCR_BKPUE		            EQU	%01000000			                ;$/;"	d
+PUCR_PDPEE	MC9S12G96_ChipDefinition.inc	/^PUCR_PDPEE		            EQU	%00010000			                ;$/;"	d
+DIRECT	MC9S12G96_ChipDefinition.inc	/^DIRECT			              EQU	$11					                 ; Direct memory base address {$00xx to $FFxx}$/;"	d
+MMCCTL	MC9S12G96_ChipDefinition.inc	/^MMCCTL			              EQU	$13				                    ;$/;"	d
+MMCCTL_NVMRES	MC9S12G96_ChipDefinition.inc	/^MMCCTL_NVMRES	            EQU	%00000001		                  ;$/;"	d
+PPAGE	MC9S12G96_ChipDefinition.inc	/^PPAGE			                EQU	$15				                   ; Current Memory Page {$0..$F)$/;"	d
+PARTIDH	MC9S12G96_ChipDefinition.inc	/^PARTIDH			              EQU	$1A					                 ; part ID$/;"	d
+PARTIDL	MC9S12G96_ChipDefinition.inc	/^PARTIDL			              EQU	$1B$/;"	d
+PartID	MC9S12G96_ChipDefinition.inc	/^PartID			              EQU	$F180			                   ; G96 and G128$/;"	d
+ECLKCTL	MC9S12G96_ChipDefinition.inc	/^ECLKCTL			              EQU	$1C				                   ; E Clock Control$/;"	d
+ECLKCTL_NECLK	MC9S12G96_ChipDefinition.inc	/^ECLKCTL_NECLK	            EQU	%10000000		                  ;$/;"	d
+ECLKCTL_NCLKX2	MC9S12G96_ChipDefinition.inc	/^ECLKCTL_NCLKX2	          EQU	%01000000		                  ;$/;"	d
+ECLKCTL_DIV16	MC9S12G96_ChipDefinition.inc	/^ECLKCTL_DIV16	            EQU	%00100000		                  ;$/;"	d
+ECLKCTL_EDIV	MC9S12G96_ChipDefinition.inc	/^ECLKCTL_EDIV	            EQU	$1F				                   ; E clk divider bits$/;"	d
+IRQCR	MC9S12G96_ChipDefinition.inc	/^IRQCR			                EQU	$1E				                   ; IRQ Control$/;"	d
+IRQCR_IRQE	MC9S12G96_ChipDefinition.inc	/^IRQCR_IRQE		            EQU	%10000000		                 ; edge$/;"	d
+IRQCR_IRQEN	MC9S12G96_ChipDefinition.inc	/^IRQCR_IRQEN		            EQU	%01000000		                 ; enable$/;"	d
+SYNR	MC9S12G96_ChipDefinition.inc	/^SYNR			                EQU	$34				;$/;"	d
+CPMUREFDIV	MC9S12G96_ChipDefinition.inc	/^CPMUREFDIV			          EQU	$35				; Reference Divider Register$/;"	d
+CPMUREFDIV_REFFRQ	MC9S12G96_ChipDefinition.inc	/^CPMUREFDIV_REFFRQ		      EQU	$C0			; - bits$/;"	d
+CPMUREFDIV_REFFRQ_1	MC9S12G96_ChipDefinition.inc	/^CPMUREFDIV_REFFRQ_1		    EQU	$00			; -- 1MHz <= fREF <= 2MHz$/;"	d
+CPMUREFDIV_REFFRQ_2	MC9S12G96_ChipDefinition.inc	/^CPMUREFDIV_REFFRQ_2		    EQU	$40			; -- 2MHz < fREF <= 6MHz$/;"	d
+CPMUREFDIV_REFFRQ_6	MC9S12G96_ChipDefinition.inc	/^CPMUREFDIV_REFFRQ_6		    EQU	$80			; -- 6MHz < fREF <= 12MHz$/;"	d
+CPMUREFDIV_REFFRQ_12	MC9S12G96_ChipDefinition.inc	/^CPMUREFDIV_REFFRQ_12	    EQU	$C0			; -- fREF >12MHz$/;"	d
+CPMUREFDIV_REFDIV	MC9S12G96_ChipDefinition.inc	/^CPMUREFDIV_REFDIV		      EQU	$0F			; - bits$/;"	d
+POSTDIV	MC9S12G96_ChipDefinition.inc	/^POSTDIV			              EQU	$36				; Post divider$/;"	d
+POSTDIV_Bits	MC9S12G96_ChipDefinition.inc	/^POSTDIV_Bits	            EQU	$1F				; - bits used in the divider$/;"	d
+CPMUFLG	MC9S12G96_ChipDefinition.inc	/^CPMUFLG	                  EQU	$37				;$/;"	d
+CPMUFLG_RTIF	MC9S12G96_ChipDefinition.inc	/^CPMUFLG_RTIF	            EQU	%10000000		; RTI Interrupt Flag$/;"	d
+CPMUFLG_PORF	MC9S12G96_ChipDefinition.inc	/^CPMUFLG_PORF	            EQU	%01000000		; Power on reset Flag$/;"	d
+CPMUFLG_LVRF	MC9S12G96_ChipDefinition.inc	/^CPMUFLG_LVRF	            EQU	%00100000		; Low Voltage Reset Flag$/;"	d
+CPMUFLG_LOCKIF	MC9S12G96_ChipDefinition.inc	/^CPMUFLG_LOCKIF	          EQU	%00010000		; PLL Lock Interrupt Flag$/;"	d
+CPMUFLG_LOCK	MC9S12G96_ChipDefinition.inc	/^CPMUFLG_LOCK	            EQU	%00001000		; Lock Status Bit$/;"	d
+CPMUFLG_ILAF	MC9S12G96_ChipDefinition.inc	/^CPMUFLG_ILAF	            EQU	%00000100		; Illegal Address Reset Flag$/;"	d
+CPMUFLG_OSCIF	MC9S12G96_ChipDefinition.inc	/^CPMUFLG_OSCIF	            EQU	%00000010		; Oscillator Interrupt Flag$/;"	d
+CPMUFLG_UPOSC	MC9S12G96_ChipDefinition.inc	/^CPMUFLG_UPOSC	            EQU	%00000001		; Oscillator Status Bit$/;"	d
+CPMUINT	MC9S12G96_ChipDefinition.inc	/^CPMUINT		                EQU	$38				;$/;"	d
+CPMUINT_RTIE	MC9S12G96_ChipDefinition.inc	/^CPMUINT_RTIE	            EQU	%10000000		; RTI Interrupt Enable$/;"	d
+CPMUCLKS	MC9S12G96_ChipDefinition.inc	/^CPMUCLKS		              EQU	$39				  ; Clock source selection for PLL, RTI and COP$/;"	d
+CPMUCLKS_RTI	MC9S12G96_ChipDefinition.inc	/^CPMUCLKS_RTI	            EQU	%00000010		; RTI clk source select$/;"	d
+CPMUCLKS_COP1	MC9S12G96_ChipDefinition.inc	/^CPMUCLKS_COP1	            EQU	%00010000		; high bit of COP OSC Select table$/;"	d
+CPMUCLKS_COP0	MC9S12G96_ChipDefinition.inc	/^CPMUCLKS_COP0	            EQU	%00000001		; low bit$/;"	d
+CPMUPLL	MC9S12G96_ChipDefinition.inc	/^CPMUPLL			              EQU	$3A				;$/;"	d
+CPMURTI	MC9S12G96_ChipDefinition.inc	/^CPMURTI			              EQU	$3B				;$/;"	d
+CPMURTI_RTDEC	MC9S12G96_ChipDefinition.inc	/^CPMURTI_RTDEC	            EQU	%10000000		; Use Decimal Divder Chain$/;"	d
+CPMUCOP	MC9S12G96_ChipDefinition.inc	/^CPMUCOP			              EQU	$3C				;$/;"	d
+CPMUCOP_RSBCK	MC9S12G96_ChipDefinition.inc	/^CPMUCOP_RSBCK	            EQU	%01000000		; stop RTI and COP in Active Background Mode$/;"	d
+CPMUARMCOP	MC9S12G96_ChipDefinition.inc	/^CPMUARMCOP		            EQU	$3F				;$/;"	d
+TIOS	MC9S12G96_ChipDefinition.inc	/^TIOS			                EQU	$40				  ;	Bit mapped 0 = input capture \/ 1 = output compare$/;"	d
+CFORC	MC9S12G96_ChipDefinition.inc	/^CFORC			                EQU	$41				  ;	Bit Mapped$/;"	d
+OC7M	MC9S12G96_ChipDefinition.inc	/^OC7M			                EQU	$42				  ;	Bit Mapped$/;"	d
+OC7D	MC9S12G96_ChipDefinition.inc	/^OC7D			                EQU	$43				  ;	Bit Mapped$/;"	d
+TCNT	MC9S12G96_ChipDefinition.inc	/^TCNT			                EQU	$44				  ; free running counter$/;"	d
+TCNTH	MC9S12G96_ChipDefinition.inc	/^TCNTH			                EQU	$44				;$/;"	d
+TCNTL	MC9S12G96_ChipDefinition.inc	/^TCNTL			                EQU	$45				;$/;"	d
+TSCR1	MC9S12G96_ChipDefinition.inc	/^TSCR1			EQU	$46				;	Control \/ Status$/;"	d
+TSCR1_TEN	MC9S12G96_ChipDefinition.inc	/^TSCR1_TEN		              EQU	%10000000		;	Timer Enable$/;"	d
+TSCR1_TSWAI	MC9S12G96_ChipDefinition.inc	/^TSCR1_TSWAI		            EQU	%01000000		;	Timer Module Stops While in Wait$/;"	d
+TSCR1_TSFRZ	MC9S12G96_ChipDefinition.inc	/^TSCR1_TSFRZ		            EQU	%00100000		;	Timer Stops While in Freeze Mode$/;"	d
+TSCR1_TFFCA	MC9S12G96_ChipDefinition.inc	/^TSCR1_TFFCA		            EQU	%00010000		;	Timer Fast Flag Clear All$/;"	d
+TSCR1_PRNT	MC9S12G96_ChipDefinition.inc	/^TSCR1_PRNT		            EQU	%00001000		;	Precision Timer$/;"	d
+TTOV	MC9S12G96_ChipDefinition.inc	/^TTOV			                EQU	$47				  ;	Toggle On Overflow - bit mapped$/;"	d
+TCTL1	MC9S12G96_ChipDefinition.inc	/^TCTL1			EQU	$48				;	Output Mode - 2-bit mapped 00 = none, 01 = toggle, 10 = clear, 11 = set$/;"	d
+TCTL1_BITS7	MC9S12G96_ChipDefinition.inc	/^TCTL1_BITS7		            EQU	%11000000		; bits for Timer 7 mode$/;"	d
+TCTL1_TOGL7	MC9S12G96_ChipDefinition.inc	/^TCTL1_TOGL7		            EQU	%01000000$/;"	d
+TCTL1_CLR7	MC9S12G96_ChipDefinition.inc	/^TCTL1_CLR7		            EQU	%10000000$/;"	d
+TCTL1_SET7	MC9S12G96_ChipDefinition.inc	/^TCTL1_SET7		            EQU	%11000000$/;"	d
+TCTL1_BITS6	MC9S12G96_ChipDefinition.inc	/^TCTL1_BITS6		            EQU	%00110000		; bits for Timer 6 mode$/;"	d
+TCTL1_TOGL6	MC9S12G96_ChipDefinition.inc	/^TCTL1_TOGL6		            EQU	%00010000$/;"	d
+TCTL1_CLR6	MC9S12G96_ChipDefinition.inc	/^TCTL1_CLR6		            EQU	%00100000$/;"	d
+TCTL1_SET6	MC9S12G96_ChipDefinition.inc	/^TCTL1_SET6		            EQU	%00110000$/;"	d
+TCTL1_BITS5	MC9S12G96_ChipDefinition.inc	/^TCTL1_BITS5		            EQU	%00001100		; bits for Timer 5 mode$/;"	d
+TCTL1_TOGL5	MC9S12G96_ChipDefinition.inc	/^TCTL1_TOGL5		            EQU	%00000100$/;"	d
+TCTL1_CLR5	MC9S12G96_ChipDefinition.inc	/^TCTL1_CLR5		            EQU	%00001000$/;"	d
+TCTL1_SET5	MC9S12G96_ChipDefinition.inc	/^TCTL1_SET5		            EQU	%00001100$/;"	d
+TCTL1_BITS4	MC9S12G96_ChipDefinition.inc	/^TCTL1_BITS4		            EQU	%00000011		; bits for Timer 5 mode$/;"	d
+TCTL1_TOGL4	MC9S12G96_ChipDefinition.inc	/^TCTL1_TOGL4		            EQU	%00000001$/;"	d
+TCTL1_CLR4	MC9S12G96_ChipDefinition.inc	/^TCTL1_CLR4		            EQU	%00000010$/;"	d
+TCTL1_SET4	MC9S12G96_ChipDefinition.inc	/^TCTL1_SET4		            EQU	%00000011$/;"	d
+TCTL2	MC9S12G96_ChipDefinition.inc	/^TCTL2			EQU	$49				;$/;"	d
+TCTL2_BITS3	MC9S12G96_ChipDefinition.inc	/^TCTL2_BITS3		            EQU	%11000000		; bits for Timer 3 mode$/;"	d
+TCTL2_TOGL3	MC9S12G96_ChipDefinition.inc	/^TCTL2_TOGL3		            EQU	%01000000$/;"	d
+TCTL2_CLR3	MC9S12G96_ChipDefinition.inc	/^TCTL2_CLR3		            EQU	%10000000$/;"	d
+TCTL2_SET3	MC9S12G96_ChipDefinition.inc	/^TCTL2_SET3		            EQU	%11000000$/;"	d
+TCTL2_BITS2	MC9S12G96_ChipDefinition.inc	/^TCTL2_BITS2		            EQU	%00110000		; bits for Timer 2 mode$/;"	d
+TCTL2_TOGL2	MC9S12G96_ChipDefinition.inc	/^TCTL2_TOGL2		            EQU	%00010000$/;"	d
+TCTL2_CLR2	MC9S12G96_ChipDefinition.inc	/^TCTL2_CLR2		            EQU	%00100000$/;"	d
+TCTL2_SET2	MC9S12G96_ChipDefinition.inc	/^TCTL2_SET2		            EQU	%00110000$/;"	d
+TCTL2_BITS1	MC9S12G96_ChipDefinition.inc	/^TCTL2_BITS1		            EQU	%00001100		; bits for Timer 1 mode$/;"	d
+TCTL2_TOGL1	MC9S12G96_ChipDefinition.inc	/^TCTL2_TOGL1		            EQU	%00000100$/;"	d
+TCTL2_CLR1	MC9S12G96_ChipDefinition.inc	/^TCTL2_CLR1		            EQU	%00001000$/;"	d
+TCTL2_SET1	MC9S12G96_ChipDefinition.inc	/^TCTL2_SET1		            EQU	%00001100$/;"	d
+TCTL2_BITS0	MC9S12G96_ChipDefinition.inc	/^TCTL2_BITS0		            EQU	%00000011		; bits for Timer 0 mode$/;"	d
+TCTL2_TOGL0	MC9S12G96_ChipDefinition.inc	/^TCTL2_TOGL0		            EQU	%00000001$/;"	d
+TCTL2_CLR0	MC9S12G96_ChipDefinition.inc	/^TCTL2_CLR0		            EQU	%00000010$/;"	d
+TCTL2_SET0	MC9S12G96_ChipDefinition.inc	/^TCTL2_SET0		            EQU	%00000011$/;"	d
+TCTL3	MC9S12G96_ChipDefinition.inc	/^TCTL3		  EQU	$4A				;	Input Capture Mode - 2-bit mapped - 00 = disabled, 01 = rising, 10 = falling, 11 = both$/;"	d
+TCTL3_BITS7	MC9S12G96_ChipDefinition.inc	/^TCTL3_BITS7		            EQU	%11000000		; bits for Timer 7 mode$/;"	d
+TCTL3_RIS7	MC9S12G96_ChipDefinition.inc	/^TCTL3_RIS7		            EQU	%01000000$/;"	d
+TCTL3_FAL7	MC9S12G96_ChipDefinition.inc	/^TCTL3_FAL7		            EQU	%10000000$/;"	d
+TCTL3_BOTH7	MC9S12G96_ChipDefinition.inc	/^TCTL3_BOTH7		            EQU	%11000000$/;"	d
+TCTL3_BITS6	MC9S12G96_ChipDefinition.inc	/^TCTL3_BITS6		            EQU	%00110000		; bits for Timer 6 mode$/;"	d
+TCTL3_RIS6	MC9S12G96_ChipDefinition.inc	/^TCTL3_RIS6		            EQU	%00010000$/;"	d
+TCTL3_FAL6	MC9S12G96_ChipDefinition.inc	/^TCTL3_FAL6		            EQU	%00100000$/;"	d
+TCTL3_BOTH6	MC9S12G96_ChipDefinition.inc	/^TCTL3_BOTH6		            EQU	%00110000$/;"	d
+TCTL3_BITS5	MC9S12G96_ChipDefinition.inc	/^TCTL3_BITS5		            EQU	%00001100		; bits for Timer 5 mode$/;"	d
+TCTL3_RIS5	MC9S12G96_ChipDefinition.inc	/^TCTL3_RIS5		            EQU	%00000100$/;"	d
+TCTL3_FAL5	MC9S12G96_ChipDefinition.inc	/^TCTL3_FAL5		            EQU	%00001000$/;"	d
+TCTL3_BOTH5	MC9S12G96_ChipDefinition.inc	/^TCTL3_BOTH5		            EQU	%00001100$/;"	d
+TCTL3_BITS4	MC9S12G96_ChipDefinition.inc	/^TCTL3_BITS4		            EQU	%00000011		; bits for Timer 5 mode$/;"	d
+TCTL3_RIS4	MC9S12G96_ChipDefinition.inc	/^TCTL3_RIS4		            EQU	%00000001$/;"	d
+TCTL3_FAL4	MC9S12G96_ChipDefinition.inc	/^TCTL3_FAL4		            EQU	%00000010$/;"	d
+TCTL3_BOTH4	MC9S12G96_ChipDefinition.inc	/^TCTL3_BOTH4		            EQU	%00000011$/;"	d
+TCTL4	MC9S12G96_ChipDefinition.inc	/^TCTL4			EQU	$4B				;$/;"	d
+TCTL4_BITS3	MC9S12G96_ChipDefinition.inc	/^TCTL4_BITS3		            EQU	%11000000		; bits for Timer 3 mode$/;"	d
+TCTL4_RIS3	MC9S12G96_ChipDefinition.inc	/^TCTL4_RIS3		            EQU	%01000000$/;"	d
+TCTL4_FAL3	MC9S12G96_ChipDefinition.inc	/^TCTL4_FAL3		            EQU	%10000000$/;"	d
+TCTL4_BOTH3	MC9S12G96_ChipDefinition.inc	/^TCTL4_BOTH3		            EQU	%11000000$/;"	d
+TCTL4_BITS2	MC9S12G96_ChipDefinition.inc	/^TCTL4_BITS2		            EQU	%00110000		; bits for Timer 2 mode$/;"	d
+TCTL4_RIS2	MC9S12G96_ChipDefinition.inc	/^TCTL4_RIS2		            EQU	%00010000$/;"	d
+TCTL4_FAL2	MC9S12G96_ChipDefinition.inc	/^TCTL4_FAL2		            EQU	%00100000$/;"	d
+TCTL4_BOTH2	MC9S12G96_ChipDefinition.inc	/^TCTL4_BOTH2		            EQU	%00110000$/;"	d
+TCTL4_BITS1	MC9S12G96_ChipDefinition.inc	/^TCTL4_BITS1		            EQU	%00001100		; bits for Timer 1 mode$/;"	d
+TCTL4_RIS1	MC9S12G96_ChipDefinition.inc	/^TCTL4_RIS1		            EQU	%00000100$/;"	d
+TCTL4_FAL1	MC9S12G96_ChipDefinition.inc	/^TCTL4_FAL1		            EQU	%00001000$/;"	d
+TCTL4_BOTH1	MC9S12G96_ChipDefinition.inc	/^TCTL4_BOTH1		            EQU	%00001100$/;"	d
+TCTL4_BITS0	MC9S12G96_ChipDefinition.inc	/^TCTL4_BITS0		            EQU	%00000011		; bits for Timer 0 mode$/;"	d
+TCTL4_RIS0	MC9S12G96_ChipDefinition.inc	/^TCTL4_RIS0		            EQU	%00000001$/;"	d
+TCTL4_FAL0	MC9S12G96_ChipDefinition.inc	/^TCTL4_FAL0		            EQU	%00000010$/;"	d
+TCTL4_BOTH0	MC9S12G96_ChipDefinition.inc	/^TCTL4_BOTH0		            EQU	%00000011$/;"	d
+TIE	MC9S12G96_ChipDefinition.inc	/^TIE				                EQU	$4C				;	bit mapped$/;"	d
+TSCR2	MC9S12G96_ChipDefinition.inc	/^TSCR2			                EQU	$4D				;$/;"	d
+TSCR2_TOI	MC9S12G96_ChipDefinition.inc	/^TSCR2_TOI		              EQU	%10000000		; overflow interrupt$/;"	d
+TSCR2_TCRE	MC9S12G96_ChipDefinition.inc	/^TSCR2_TCRE		            EQU	%00001000		;$/;"	d
+TSCR2_PR2	MC9S12G96_ChipDefinition.inc	/^TSCR2_PR2		              EQU	%00000100		; prescalers$/;"	d
+TSCR2_PR1	MC9S12G96_ChipDefinition.inc	/^TSCR2_PR1		              EQU	%00000010$/;"	d
+TSCR2_PR0	MC9S12G96_ChipDefinition.inc	/^TSCR2_PR0		              EQU	%00000001$/;"	d
+TFLG1	MC9S12G96_ChipDefinition.inc	/^TFLG1			                EQU	$4E				;	bit mapped$/;"	d
+TFLG2	MC9S12G96_ChipDefinition.inc	/^TFLG2			                EQU	$4F				;$/;"	d
+TFLG2_TOF	MC9S12G96_ChipDefinition.inc	/^TFLG2_TOF		              EQU	%10000000		; Timer Overflow Flag$/;"	d
+TC0	MC9S12G96_ChipDefinition.inc	/^TC0				                EQU	$50$/;"	d
+TC0H	MC9S12G96_ChipDefinition.inc	/^TC0H			                EQU	$50				;	Timer 0 Counter High$/;"	d
+TC0L	MC9S12G96_ChipDefinition.inc	/^TC0L			                EQU	$51				;	Timer 0 Counter Low$/;"	d
+TC1	MC9S12G96_ChipDefinition.inc	/^TC1				                EQU	$52$/;"	d
+TC1H	MC9S12G96_ChipDefinition.inc	/^TC1H			                EQU	$52$/;"	d
+TC1L	MC9S12G96_ChipDefinition.inc	/^TC1L			                EQU	$53$/;"	d
+TC2	MC9S12G96_ChipDefinition.inc	/^TC2				                EQU	$54$/;"	d
+TC2H	MC9S12G96_ChipDefinition.inc	/^TC2H			                EQU	$54$/;"	d
+TC2L	MC9S12G96_ChipDefinition.inc	/^TC2L			                EQU	$55$/;"	d
+TC3	MC9S12G96_ChipDefinition.inc	/^TC3				                EQU	$56$/;"	d
+TC3H	MC9S12G96_ChipDefinition.inc	/^TC3H			                EQU	$56$/;"	d
+TC3L	MC9S12G96_ChipDefinition.inc	/^TC3L			                EQU	$57$/;"	d
+TC4	MC9S12G96_ChipDefinition.inc	/^TC4				                EQU	$58$/;"	d
+TC4H	MC9S12G96_ChipDefinition.inc	/^TC4H			                EQU	$58$/;"	d
+TC4L	MC9S12G96_ChipDefinition.inc	/^TC4L			                EQU	$59$/;"	d
+TC5	MC9S12G96_ChipDefinition.inc	/^TC5				                EQU	$5A$/;"	d
+TC5H	MC9S12G96_ChipDefinition.inc	/^TC5H			                EQU	$5A$/;"	d
+TC5L	MC9S12G96_ChipDefinition.inc	/^TC5L			                EQU	$5B$/;"	d
+TC6	MC9S12G96_ChipDefinition.inc	/^TC6				                EQU	$5C$/;"	d
+TC6H	MC9S12G96_ChipDefinition.inc	/^TC6H			                EQU	$5C$/;"	d
+TC6L	MC9S12G96_ChipDefinition.inc	/^TC6L			                EQU	$5D$/;"	d
+TC7	MC9S12G96_ChipDefinition.inc	/^TC7				                EQU	$5E$/;"	d
+TC7H	MC9S12G96_ChipDefinition.inc	/^TC7H			                EQU	$5E$/;"	d
+TC7L	MC9S12G96_ChipDefinition.inc	/^TC7L			                EQU	$5F$/;"	d
+PACTL	MC9S12G96_ChipDefinition.inc	/^PACTL			                EQU	$60				; Pulse Accumulator Control$/;"	d
+PAFLG	MC9S12G96_ChipDefinition.inc	/^PAFLG			                EQU	$61				;$/;"	d
+PACNTH	MC9S12G96_ChipDefinition.inc	/^PACNTH			              EQU	$62				;$/;"	d
+PACNTL	MC9S12G96_ChipDefinition.inc	/^PACNTL			              EQU	$63				;$/;"	d
+OCPD	MC9S12G96_ChipDefinition.inc	/^OCPD			                EQU	$6C				;$/;"	d
+PTPSR	MC9S12G96_ChipDefinition.inc	/^PTPSR			                EQU	$6E				;$/;"	d
+ATDCTL0	MC9S12G96_ChipDefinition.inc	/^ATDCTL0			              EQU	$70				; ADC Module Controls$/;"	d
+ATDCTL0_WRAP	MC9S12G96_ChipDefinition.inc	/^ATDCTL0_WRAP	            EQU	%00001111		; Wrap channel bits$/;"	d
+ATDCTL1	MC9S12G96_ChipDefinition.inc	/^ATDCTL1			              EQU	$71				;$/;"	d
+ATDCTL1_ETRIG	MC9S12G96_ChipDefinition.inc	/^ATDCTL1_ETRIG	            EQU	%10000000		; External trigger select$/;"	d
+ATDCTL1_SRES	MC9S12G96_ChipDefinition.inc	/^ATDCTL1_SRES	            EQU	%01100000		; resolution bits 00 = 8, 01 = 10$/;"	d
+ATDCTL1_SRES10	MC9S12G96_ChipDefinition.inc	/^ATDCTL1_SRES10	          EQU	%00100000$/;"	d
+ATDCTL1_SMP_DIS	MC9S12G96_ChipDefinition.inc	/^ATDCTL1_SMP_DIS	          EQU	%00010000		; Discharge before conversion$/;"	d
+ATDCTL1_ETRIGCH	MC9S12G96_ChipDefinition.inc	/^ATDCTL1_ETRIGCH	          EQU	%00001111		; External trigger select bits$/;"	d
+ATDCTL2	MC9S12G96_ChipDefinition.inc	/^ATDCTL2			              EQU	$72				;$/;"	d
+ATDCTL2_AFFC	MC9S12G96_ChipDefinition.inc	/^ATDCTL2_AFFC	            EQU	%01000000		; Fast Flag Clear All$/;"	d
+ATDCTL2_ETRIGLE	MC9S12G96_ChipDefinition.inc	/^ATDCTL2_ETRIGLE	          EQU	%00010000		; External trigger Level\/Edge$/;"	d
+ATDCTL2_ETRIGP	MC9S12G96_ChipDefinition.inc	/^ATDCTL2_ETRIGP	          EQU	%00001000		; External trigger Polarity$/;"	d
+ATDCTL2_ETRIGE	MC9S12G96_ChipDefinition.inc	/^ATDCTL2_ETRIGE	          EQU	%00000100		; External trigger Enable$/;"	d
+ATDCTL2_ASCIE	MC9S12G96_ChipDefinition.inc	/^ATDCTL2_ASCIE	            EQU	%00000010		; ATD Sequence Complete Interrupt Enable$/;"	d
+ATDCTL2_ACMPIE	MC9S12G96_ChipDefinition.inc	/^ATDCTL2_ACMPIE	          EQU	%00000001		; ATD Compare Interrupt Enable$/;"	d
+ATDCTL3	MC9S12G96_ChipDefinition.inc	/^ATDCTL3			              EQU	$73				;$/;"	d
+ATDCTL3_DJM	MC9S12G96_ChipDefinition.inc	/^ATDCTL3_DJM		            EQU	%10000000		; Result Register Data Justification 0 = left, 1 = right$/;"	d
+ATDCTL3_SEQLEN	MC9S12G96_ChipDefinition.inc	/^ATDCTL3_SEQLEN	          EQU	%01111000		; Conversion Sequence Length$/;"	d
+ATDCTL3_FIFO	MC9S12G96_ChipDefinition.inc	/^ATDCTL3_FIFO	            EQU	%00000100		; Result Register FIFO mode$/;"	d
+ATDCTL3_FRZ	MC9S12G96_ChipDefinition.inc	/^ATDCTL3_FRZ		            EQU	%00000011		; Debug mode freeze bits$/;"	d
+ATDCTL4	MC9S12G96_ChipDefinition.inc	/^ATDCTL4			              EQU	$74				;$/;"	d
+ATDCTL4_SMP	MC9S12G96_ChipDefinition.inc	/^ATDCTL4_SMP		            EQU	%11100000		; Sample Time Select bits$/;"	d
+ATDCTL4_PRS	MC9S12G96_ChipDefinition.inc	/^ATDCTL4_PRS		            EQU	%00011111		; ATD Clock Prescaler$/;"	d
+ATDCTL5	MC9S12G96_ChipDefinition.inc	/^ATDCTL5			              EQU	$75				;$/;"	d
+ATDCTL5_SC	MC9S12G96_ChipDefinition.inc	/^ATDCTL5_SC		            EQU	%01000000		; Special Channel Conversion Bit$/;"	d
+ATDCTL5_SCAN	MC9S12G96_ChipDefinition.inc	/^ATDCTL5_SCAN	            EQU	%00100000		; Continuous Conversion Sequence Mode$/;"	d
+ATDCTL5_MULT	MC9S12G96_ChipDefinition.inc	/^ATDCTL5_MULT	            EQU	%00010000		; Multi-Channel Sample Mode$/;"	d
+ATDCTL5_CHAN	MC9S12G96_ChipDefinition.inc	/^ATDCTL5_CHAN	            EQU	%00001111		; Analog Input Channel Select Code$/;"	d
+ATDSTAT0	MC9S12G96_ChipDefinition.inc	/^ATDSTAT0		              EQU	$76				; Status$/;"	d
+ATDSTAT0_SCF	MC9S12G96_ChipDefinition.inc	/^ATDSTAT0_SCF	            EQU	%10000000		; Sequence Complete Flag$/;"	d
+ATDSTAT0_ETORF	MC9S12G96_ChipDefinition.inc	/^ATDSTAT0_ETORF	          EQU	%00100000		; External Trigger Overrun Flag$/;"	d
+ATDSTAT0_FIFOR	MC9S12G96_ChipDefinition.inc	/^ATDSTAT0_FIFOR	          EQU	%00010000		; Result Register Overrun Flag$/;"	d
+ATDSTAT0_CC	MC9S12G96_ChipDefinition.inc	/^ATDSTAT0_CC		            EQU	%00001111		; Conversion Counter Bits$/;"	d
+ATDCMPEH	MC9S12G96_ChipDefinition.inc	/^ATDCMPEH		              EQU	$78				; Compare Enable for Conversion Number {bit[0..11] }$/;"	d
+ATDCMPEL	MC9S12G96_ChipDefinition.inc	/^ATDCMPEL		              EQU	$79				;$/;"	d
+ATDSTAT2H	MC9S12G96_ChipDefinition.inc	/^ATDSTAT2H		              EQU	$7A				; Conversion Complete Flags { bit[0..11] }$/;"	d
+ATDSTAT2L	MC9S12G96_ChipDefinition.inc	/^ATDSTAT2L		              EQU	$7B				;$/;"	d
+ATDDIENH	MC9S12G96_ChipDefinition.inc	/^ATDDIENH		              EQU	$7C				; ATD Digital Input Enable on channel { bit[0..11] }$/;"	d
+ATDDIENL	MC9S12G96_ChipDefinition.inc	/^ATDDIENL		              EQU	$7D				;$/;"	d
+ATDCMPHTH	MC9S12G96_ChipDefinition.inc	/^ATDCMPHTH		              EQU	$7E				; Compare Operation Higher Than Enable for conversion number {bit[0..1] }$/;"	d
+ATDCMPHTL	MC9S12G96_ChipDefinition.inc	/^ATDCMPHTL		              EQU	$7F				;$/;"	d
+ATDDR0	MC9S12G96_ChipDefinition.inc	/^ATDDR0			              EQU	$80				; ADC Results (double register)$/;"	d
+ATDDR1	MC9S12G96_ChipDefinition.inc	/^ATDDR1			              EQU	$82$/;"	d
+ATDDR2	MC9S12G96_ChipDefinition.inc	/^ATDDR2			              EQU	$84$/;"	d
+ATDDR3	MC9S12G96_ChipDefinition.inc	/^ATDDR3			              EQU	$86$/;"	d
+ATDDR4	MC9S12G96_ChipDefinition.inc	/^ATDDR4			              EQU	$88$/;"	d
+ATDDR5	MC9S12G96_ChipDefinition.inc	/^ATDDR5			              EQU	$8A$/;"	d
+ATDDR6	MC9S12G96_ChipDefinition.inc	/^ATDDR6			              EQU	$8C$/;"	d
+ATDDR7	MC9S12G96_ChipDefinition.inc	/^ATDDR7			              EQU	$8E$/;"	d
+ATDDR8	MC9S12G96_ChipDefinition.inc	/^ATDDR8			              EQU	$90$/;"	d
+ATDDR9	MC9S12G96_ChipDefinition.inc	/^ATDDR9			              EQU	$92$/;"	d
+ATDDR10	MC9S12G96_ChipDefinition.inc	/^ATDDR10			              EQU	$94$/;"	d
+ATDDR11	MC9S12G96_ChipDefinition.inc	/^ATDDR11			              EQU	$96$/;"	d
+ATDDR12	MC9S12G96_ChipDefinition.inc	/^ATDDR12			              EQU	$98$/;"	d
+ATDDR13	MC9S12G96_ChipDefinition.inc	/^ATDDR13			              EQU	$9A$/;"	d
+ATDDR14	MC9S12G96_ChipDefinition.inc	/^ATDDR14			              EQU	$9C$/;"	d
+ATDDR15	MC9S12G96_ChipDefinition.inc	/^ATDDR15			              EQU	$9E$/;"	d
+PWME	MC9S12G96_ChipDefinition.inc	/^PWME			                EQU	$A0				; Enable$/;"	d
+PWMPOL	MC9S12G96_ChipDefinition.inc	/^PWMPOL			              EQU	$A1				; Polarity$/;"	d
+PWMCLK	MC9S12G96_ChipDefinition.inc	/^PWMCLK			              EQU	$A2				; Clock Select ( A,B,AB,etc )$/;"	d
+PWMPRCLK	MC9S12G96_ChipDefinition.inc	/^PWMPRCLK		              EQU	$A3				; Prescale A,B$/;"	d
+PWMCAE	MC9S12G96_ChipDefinition.inc	/^PWMCAE			              EQU	$A4				; Center Align$/;"	d
+PWMCTL	MC9S12G96_ChipDefinition.inc	/^PWMCTL			              EQU	$A5				; Control - Concat and freeze$/;"	d
+PWMCLKAB	MC9S12G96_ChipDefinition.inc	/^PWMCLKAB		              EQU	$A6				; AB Clock Select$/;"	d
+PWMSCLA	MC9S12G96_ChipDefinition.inc	/^PWMSCLA			              EQU	$A8				; Scale A$/;"	d
+PWMSCLB	MC9S12G96_ChipDefinition.inc	/^PWMSCLB			              EQU	$A9				; Scale B$/;"	d
+PWMCNT0	MC9S12G96_ChipDefinition.inc	/^PWMCNT0			              EQU	$AC				; 8-bit Up\/Down Counters$/;"	d
+PWMCNT1	MC9S12G96_ChipDefinition.inc	/^PWMCNT1			              EQU	$AD$/;"	d
+PWMCNT2	MC9S12G96_ChipDefinition.inc	/^PWMCNT2			              EQU	$AE$/;"	d
+PWMCNT3	MC9S12G96_ChipDefinition.inc	/^PWMCNT3			              EQU	$AF$/;"	d
+PWMCNT4	MC9S12G96_ChipDefinition.inc	/^PWMCNT4			              EQU	$B0$/;"	d
+PWMCNT5	MC9S12G96_ChipDefinition.inc	/^PWMCNT5			              EQU	$B1$/;"	d
+PWMCNT6	MC9S12G96_ChipDefinition.inc	/^PWMCNT6			              EQU	$B2$/;"	d
+PWMCNT7	MC9S12G96_ChipDefinition.inc	/^PWMCNT7			              EQU	$B3$/;"	d
+PWMPER0	MC9S12G96_ChipDefinition.inc	/^PWMPER0			              EQU	$B4				; Periods$/;"	d
+PWMPER1	MC9S12G96_ChipDefinition.inc	/^PWMPER1			              EQU	$B5$/;"	d
+PWMPER2	MC9S12G96_ChipDefinition.inc	/^PWMPER2			              EQU	$B6$/;"	d
+PWMPER3	MC9S12G96_ChipDefinition.inc	/^PWMPER3			              EQU	$B7$/;"	d
+PWMPER4	MC9S12G96_ChipDefinition.inc	/^PWMPER4			              EQU	$B8$/;"	d
+PWMPER5	MC9S12G96_ChipDefinition.inc	/^PWMPER5			              EQU	$B9$/;"	d
+PWMPER6	MC9S12G96_ChipDefinition.inc	/^PWMPER6			              EQU	$BA$/;"	d
+PWMPER7	MC9S12G96_ChipDefinition.inc	/^PWMPER7			              EQU	$BB$/;"	d
+PWMDTY0	MC9S12G96_ChipDefinition.inc	/^PWMDTY0			              EQU	$BC				; Duty Cycles$/;"	d
+PWMDTY1	MC9S12G96_ChipDefinition.inc	/^PWMDTY1			              EQU	$BD$/;"	d
+PWMDTY2	MC9S12G96_ChipDefinition.inc	/^PWMDTY2			              EQU	$BE$/;"	d
+PWMDTY3	MC9S12G96_ChipDefinition.inc	/^PWMDTY3			              EQU	$BF$/;"	d
+PWMDTY4	MC9S12G96_ChipDefinition.inc	/^PWMDTY4			              EQU	$C0$/;"	d
+PWMDTY5	MC9S12G96_ChipDefinition.inc	/^PWMDTY5			              EQU	$C1$/;"	d
+PWMDTY6	MC9S12G96_ChipDefinition.inc	/^PWMDTY6			              EQU	$C2$/;"	d
+PWMDTY7	MC9S12G96_ChipDefinition.inc	/^PWMDTY7			              EQU	$C3$/;"	d
+SCI0ASR1	MC9S12G96_ChipDefinition.inc	/^SCI0ASR1		              EQU	$C8				; Aux mode$/;"	d
+SCI0ACR1	MC9S12G96_ChipDefinition.inc	/^SCI0ACR1		              EQU	$C9				; Aux Mode$/;"	d
+SCI0ACR2	MC9S12G96_ChipDefinition.inc	/^SCI0ACR2		              EQU	$CA				; Aux Mode$/;"	d
+SCI0BDH	MC9S12G96_ChipDefinition.inc	/^SCI0BDH			              EQU	$C8				; Baud Rate divider$/;"	d
+SCI0BDL	MC9S12G96_ChipDefinition.inc	/^SCI0BDL			              EQU	$C9				; SCI baud rate = SCI bus clock \/ (16 x SBR[12:0])$/;"	d
+SCI0CR1	MC9S12G96_ChipDefinition.inc	/^SCI0CR1			              EQU	$CA				; Control Reg 1$/;"	d
+SCICR1_LOOPS	MC9S12G96_ChipDefinition.inc	/^SCICR1_LOOPS	            EQU	%10000000		; Loop Mode$/;"	d
+SCICR1_SCISWAI	MC9S12G96_ChipDefinition.inc	/^SCICR1_SCISWAI	          EQU	%01000000		; Stop in Wait Mode$/;"	d
+SCICR1_RSRC	MC9S12G96_ChipDefinition.inc	/^SCICR1_RSRC		            EQU	%00100000		; RCVR Source in Loop Mode (can connect RX to TX internally)$/;"	d
+SCICR1_M	MC9S12G96_ChipDefinition.inc	/^SCICR1_M		              EQU	%00010000		; 9 Bit Mode ( 0 = 8,1,N )$/;"	d
+SCICR1_WAKE	MC9S12G96_ChipDefinition.inc	/^SCICR1_WAKE		            EQU	%00001000		; Wake on address Mark$/;"	d
+SCICR1_ILT	MC9S12G96_ChipDefinition.inc	/^SCICR1_ILT		            EQU	%00000100		; Idle Line Type$/;"	d
+SCICR1_PE	MC9S12G96_ChipDefinition.inc	/^SCICR1_PE		              EQU	%00000010		; Parity Enable$/;"	d
+SCICR1_PT	MC9S12G96_ChipDefinition.inc	/^SCICR1_PT		              EQU	%00000001		; Parity Type if PE ( 0 = even )$/;"	d
+SCI0CR2	MC9S12G96_ChipDefinition.inc	/^SCI0CR2			              EQU	$CB				;$/;"	d
+SCICR2_TIE	MC9S12G96_ChipDefinition.inc	/^SCICR2_TIE		            EQU	%10000000		; TX Int Enable$/;"	d
+SCICR2_TCIE	MC9S12G96_ChipDefinition.inc	/^SCICR2_TCIE		            EQU	%01000000		; TX Complete Interrupt Enable$/;"	d
+SCICR2_RIE	MC9S12G96_ChipDefinition.inc	/^SCICR2_RIE		            EQU	%00100000		; RX Int Enable$/;"	d
+SCICR2_ILIE	MC9S12G96_ChipDefinition.inc	/^SCICR2_ILIE		            EQU	%00010000		; Idle Line Int Enable$/;"	d
+SCICR2_TE	MC9S12G96_ChipDefinition.inc	/^SCICR2_TE		              EQU	%00001000		; TX Enable$/;"	d
+SCICR2_RE	MC9S12G96_ChipDefinition.inc	/^SCICR2_RE		              EQU	%00000100		; RX Enable$/;"	d
+SCICR2_RWU	MC9S12G96_ChipDefinition.inc	/^SCICR2_RWU		            EQU	%00000010		; RX Wake Up$/;"	d
+SCICR2_SBK	MC9S12G96_ChipDefinition.inc	/^SCICR2_SBK		            EQU	%00000001		; Send Break$/;"	d
+SCI0SR1	MC9S12G96_ChipDefinition.inc	/^SCI0SR1			              EQU	$CC				; Status Flag Register - clears interrupts - applies to all SCIx$/;"	d
+SCISR1_TDRE	MC9S12G96_ChipDefinition.inc	/^SCISR1_TDRE		            EQU	%10000000		; TD Reg Empty$/;"	d
+SCISR1_TC	MC9S12G96_ChipDefinition.inc	/^SCISR1_TC		              EQU	%01000000		; Transmit Complete$/;"	d
+SCISR1_RDRF	MC9S12G96_ChipDefinition.inc	/^SCISR1_RDRF		            EQU	%00100000		; RD Reg Full$/;"	d
+SCISR1_IDLE	MC9S12G96_ChipDefinition.inc	/^SCISR1_IDLE		            EQU	%00010000		; Idle Line Flag$/;"	d
+SCISR1_OR	MC9S12G96_ChipDefinition.inc	/^SCISR1_OR		              EQU	%00001000		; Overrun$/;"	d
+SCISR1_NF	MC9S12G96_ChipDefinition.inc	/^SCISR1_NF		              EQU	%00000100		; Noise Flag$/;"	d
+SCISR1_FE	MC9S12G96_ChipDefinition.inc	/^SCISR1_FE		              EQU	%00000010		; Framing Error$/;"	d
+SCISR1_PF	MC9S12G96_ChipDefinition.inc	/^SCISR1_PF		              EQU	%00000001		; Parity Error$/;"	d
+SCI0SR2	MC9S12G96_ChipDefinition.inc	/^SCI0SR2			              EQU	$CD				; Status Reg 2 - Alternate mode stuff$/;"	d
+SCI0DRH	MC9S12G96_ChipDefinition.inc	/^SCI0DRH			              EQU	$CE				; Data Reg High$/;"	d
+SCI0DRL	MC9S12G96_ChipDefinition.inc	/^SCI0DRL			              EQU	$CF				; Data Reg Low$/;"	d
+SCI1BDH	MC9S12G96_ChipDefinition.inc	/^SCI1BDH			              EQU	$D0				;$/;"	d
+SCI1ASR1	MC9S12G96_ChipDefinition.inc	/^SCI1ASR1		              EQU	$D0				;$/;"	d
+SCI1BDL	MC9S12G96_ChipDefinition.inc	/^SCI1BDL			              EQU	$D1				;$/;"	d
+SCI1ACR1	MC9S12G96_ChipDefinition.inc	/^SCI1ACR1		              EQU	$D1				;$/;"	d
+SCI1CR1	MC9S12G96_ChipDefinition.inc	/^SCI1CR1			              EQU	$D2				;$/;"	d
+SCI1ACR2	MC9S12G96_ChipDefinition.inc	/^SCI1ACR2		              EQU	$D2				;$/;"	d
+SCI1CR2	MC9S12G96_ChipDefinition.inc	/^SCI1CR2			              EQU	$D3				;$/;"	d
+SCI1SR1	MC9S12G96_ChipDefinition.inc	/^SCI1SR1			              EQU	$D4				;$/;"	d
+SCI1SR2	MC9S12G96_ChipDefinition.inc	/^SCI1SR2			              EQU	$D5				;$/;"	d
+SCI1DRH	MC9S12G96_ChipDefinition.inc	/^SCI1DRH			              EQU	$D6				;$/;"	d
+SCI1DRL	MC9S12G96_ChipDefinition.inc	/^SCI1DRL			              EQU	$D7				;$/;"	d
+SPI0CR1	MC9S12G96_ChipDefinition.inc	/^SPI0CR1			              EQU	$D8				; Control Register 1$/;"	d
+SPICR1_SPIE	MC9S12G96_ChipDefinition.inc	/^SPICR1_SPIE		            EQU	%10000000		;  Int enable$/;"	d
+SPICR1_SPE	MC9S12G96_ChipDefinition.inc	/^SPICR1_SPE		            EQU	%01000000		;  SPI enable$/;"	d
+SPICR1_SPTIE	MC9S12G96_ChipDefinition.inc	/^SPICR1_SPTIE	            EQU	%00100000		;  TX Int enable$/;"	d
+SPICR1_MSTR	MC9S12G96_ChipDefinition.inc	/^SPICR1_MSTR		            EQU	%00010000		;  Master enable$/;"	d
+SPICR1_CPOL	MC9S12G96_ChipDefinition.inc	/^SPICR1_CPOL		            EQU	%00001000		;  Clock Polarity$/;"	d
+SPICR1_CPHA	MC9S12G96_ChipDefinition.inc	/^SPICR1_CPHA		            EQU	%00000100		;  Clock Phase$/;"	d
+SPICR1_SSOE	MC9S12G96_ChipDefinition.inc	/^SPICR1_SSOE		            EQU	%00000010		;  Slave Select Output Enable$/;"	d
+SPICR1_LSBFE	MC9S12G96_ChipDefinition.inc	/^SPICR1_LSBFE	            EQU	%00000001		;  LSB First enable$/;"	d
+SPI0CR2	MC9S12G96_ChipDefinition.inc	/^SPI0CR2			              EQU	$D9				; Control Register 2$/;"	d
+SPICR2_XFRW	MC9S12G96_ChipDefinition.inc	/^SPICR2_XFRW		            EQU	%01000000		; 16 Bit XFER$/;"	d
+SPICR2_MODFEN	MC9S12G96_ChipDefinition.inc	/^SPICR2_MODFEN	            EQU	%00010000		; Mode Fault Enable$/;"	d
+SPICR2_BIDIROE	MC9S12G96_ChipDefinition.inc	/^SPICR2_BIDIROE	          EQU	%00001000		; OE in Bidi Mode$/;"	d
+SPICR2_SPISWAI	MC9S12G96_ChipDefinition.inc	/^SPICR2_SPISWAI	          EQU	%00000010		; Stop in Wait Mode$/;"	d
+SPICR2_SPC0	MC9S12G96_ChipDefinition.inc	/^SPICR2_SPC0		            EQU	%00000001		; Serial Pin 0$/;"	d
+SPI0BR	MC9S12G96_ChipDefinition.inc	/^SPI0BR			              EQU	$DA				; Baud Rate Register$/;"	d
+SPIBR_SPPR	MC9S12G96_ChipDefinition.inc	/^SPIBR_SPPR		            EQU	%01110000		; PreSelection bits$/;"	d
+SPIBR_SPR	MC9S12G96_ChipDefinition.inc	/^SPIBR_SPR		              EQU	%00000111		; Selection bits$/;"	d
+SPIBR_12KHZ	MC9S12G96_ChipDefinition.inc	/^SPIBR_12KHZ		            EQU	%01110111		; slowest rate$/;"	d
+SPIBR_130KHZ	MC9S12G96_ChipDefinition.inc	/^SPIBR_130KHZ	            EQU	%00100110		; 130.21khz$/;"	d
+SPIBR_12MHZ	MC9S12G96_ChipDefinition.inc	/^SPIBR_12MHZ		            EQU	%00000000		; fastest rate$/;"	d
+SPI0SR	MC9S12G96_ChipDefinition.inc	/^SPI0SR			              EQU	$DB				; Status Register$/;"	d
+SPISR_SPIF	MC9S12G96_ChipDefinition.inc	/^SPISR_SPIF		            EQU	%10000000		; Int Flag$/;"	d
+SPISR_SPTEF	MC9S12G96_ChipDefinition.inc	/^SPISR_SPTEF		            EQU	%00100000		; TX Int Flag$/;"	d
+SPISR_MODF	MC9S12G96_ChipDefinition.inc	/^SPISR_MODF		            EQU	%00010000		; Mode Fail Flag$/;"	d
+SPI0DRH	MC9S12G96_ChipDefinition.inc	/^SPI0DRH			              EQU	$DC				; Data Hi  { 15..8 }$/;"	d
+SPI0DRL	MC9S12G96_ChipDefinition.inc	/^SPI0DRL			              EQU	$DD				; Data Low { 7..0 }$/;"	d
+SCI2BDH	MC9S12G96_ChipDefinition.inc	/^SCI2BDH			              EQU	$E8				;$/;"	d
+SCI2ASR1	MC9S12G96_ChipDefinition.inc	/^SCI2ASR1		              EQU	$E8				;$/;"	d
+SCI2BDL	MC9S12G96_ChipDefinition.inc	/^SCI2BDL			              EQU	$E9				;$/;"	d
+SCI2ACR1	MC9S12G96_ChipDefinition.inc	/^SCI2ACR1		              EQU	$E9				;$/;"	d
+SCI2CR1	MC9S12G96_ChipDefinition.inc	/^SCI2CR1			              EQU	$EA				;$/;"	d
+SCI2ACR2	MC9S12G96_ChipDefinition.inc	/^SCI2ACR2		              EQU	$EA				;$/;"	d
+SCI2CR2	MC9S12G96_ChipDefinition.inc	/^SCI2CR2			              EQU	$EB				;$/;"	d
+SCI2SR1	MC9S12G96_ChipDefinition.inc	/^SCI2SR1			              EQU	$EC				;$/;"	d
+SCI2SR2	MC9S12G96_ChipDefinition.inc	/^SCI2SR2			              EQU	$ED				;$/;"	d
+SCI2DRH	MC9S12G96_ChipDefinition.inc	/^SCI2DRH			              EQU	$EE				;$/;"	d
+SCI2DRL	MC9S12G96_ChipDefinition.inc	/^SCI2DRL			              EQU	$EF				;$/;"	d
+SPI1CR1	MC9S12G96_ChipDefinition.inc	/^SPI1CR1			              EQU	$F0				;$/;"	d
+SPI1CR2	MC9S12G96_ChipDefinition.inc	/^SPI1CR2			              EQU	$F1				;$/;"	d
+SPI1BR	MC9S12G96_ChipDefinition.inc	/^SPI1BR			              EQU	$F2				;$/;"	d
+SPI1SR	MC9S12G96_ChipDefinition.inc	/^SPI1SR			              EQU	$F3				;$/;"	d
+SPI1DRH	MC9S12G96_ChipDefinition.inc	/^SPI1DRH			              EQU	$F4				;$/;"	d
+SPI1DRL	MC9S12G96_ChipDefinition.inc	/^SPI1DRL			              EQU	$F5				;$/;"	d
+SPI2CR1	MC9S12G96_ChipDefinition.inc	/^SPI2CR1			              EQU	$F8				;$/;"	d
+SPI2CR2	MC9S12G96_ChipDefinition.inc	/^SPI2CR2			              EQU	$F9				;$/;"	d
+SPI2BR	MC9S12G96_ChipDefinition.inc	/^SPI2BR			              EQU	$FA				;$/;"	d
+SPI2SR	MC9S12G96_ChipDefinition.inc	/^SPI2SR			              EQU	$FB				;$/;"	d
+SPI2DRH	MC9S12G96_ChipDefinition.inc	/^SPI2DRH			              EQU	$FC				;$/;"	d
+SPI2DRL	MC9S12G96_ChipDefinition.inc	/^SPI2DRL			              EQU	$FD				;$/;"	d
+FCLKDIV	MC9S12G96_ChipDefinition.inc	/^FCLKDIV			              EQU	$100			; Flash Clock Divider$/;"	d
+FCLKDIV_FDIVLD	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_FDIVLD	          EQU	$80				; - Clock Divider Loaded (RO)$/;"	d
+FCLKDIV_FDIVLCK	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_FDIVLCK	          EQU	$40				; - Clock Divider Locked$/;"	d
+FCLKDIV_DivMask	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_DivMask	          EQU	$3F				; - Clock Divider Bits$/;"	d
+FCLKDIV_1	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_1		              EQU	$00				; -- 1.0 to 1.6 MHz Bus Clock$/;"	d
+FCLKDIV_2	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_2		              EQU	$01				; -- 1.6 to 2.6$/;"	d
+FCLKDIV_3	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_3		              EQU	$02				; -- 2.6 to 3.6$/;"	d
+FCLKDIV_4	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_4		              EQU	$03				; -- 3.6 to 4.6$/;"	d
+FCLKDIV_5	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_5		              EQU	$04				; -- 4.6 to 5.6$/;"	d
+FCLKDIV_6	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_6		              EQU	$05				; -- 5.6 to 6.6		POSTDIV = 3 (Default)$/;"	d
+FCLKDIV_7	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_7		              EQU	$06				; -- 6.6 to 7.6$/;"	d
+FCLKDIV_8	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_8		              EQU	$07				; -- 7.6 to 8.6		POSTDIV = 2 (Default)$/;"	d
+FCLKDIV_9	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_9		              EQU	$08				; -- 8.6 to 9.6$/;"	d
+FCLKDIV_10	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_10		            EQU	$09				; -- 9.6 to 10.6$/;"	d
+FCLKDIV_11	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_11		            EQU	$0A				; -- 10.6 to 11.6$/;"	d
+FCLKDIV_12	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_12		            EQU	$0B				; -- 11.6 to 12.6	POSTDIV = 1 (Default)$/;"	d
+FCLKDIV_13	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_13		            EQU	$0C				; -- 12.6 to 13.6$/;"	d
+FCLKDIV_14	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_14		            EQU	$0D				; -- 13.6 to 14.6$/;"	d
+FCLKDIV_15	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_15		            EQU	$0E				; -- 14.6 to 15.6$/;"	d
+FCLKDIV_16	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_16		            EQU	$0F				; -- 15.6 to 16.6$/;"	d
+FCLKDIV_17	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_17		            EQU	$10				; -- 16.6 to 17.6$/;"	d
+FCLKDIV_18	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_18		            EQU	$11				; -- 17.6 to 18.6$/;"	d
+FCLKDIV_19	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_19		            EQU	$12				; -- 18.6 to 19.6$/;"	d
+FCLKDIV_20	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_20		            EQU	$13				; -- 19.6 to 20.6$/;"	d
+FCLKDIV_21	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_21		            EQU	$14				; -- 20.6 to 21.6$/;"	d
+FCLKDIV_22	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_22		            EQU	$15				; -- 21.6 to 22.6$/;"	d
+FCLKDIV_23	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_23		            EQU	$16				; -- 22.6 to 23.6$/;"	d
+FCLKDIV_24	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_24		            EQU	$17				; -- 23.6 to 24.6$/;"	d
+FCLKDIV_25	MC9S12G96_ChipDefinition.inc	/^FCLKDIV_25		            EQU	$18				; -- 24.6 to 25.6	POSTDIV = 0 (Default)$/;"	d
+FSEC	MC9S12G96_ChipDefinition.inc	/^FSEC			                EQU	$101			; Flash Security Register$/;"	d
+FSEC_KEYEN	MC9S12G96_ChipDefinition.inc	/^FSEC_KEYEN		            EQU	$C0				; - Backdoor Key Security Enable Bits$/;"	d
+FSEC_KEYEN_EN	MC9S12G96_ChipDefinition.inc	/^FSEC_KEYEN_EN	            EQU	$80				; -- Enabled ( all other patterns are Disabled )$/;"	d
+FSEC_RNV	MC9S12G96_ChipDefinition.inc	/^FSEC_RNV		              EQU	$3C				; - Reserved Nonvolatile Bits$/;"	d
+FSEC_SEC	MC9S12G96_ChipDefinition.inc	/^FSEC_SEC		              EQU	$03				; - Flash Security Bits$/;"	d
+FSEC_SEC_NOT	MC9S12G96_ChipDefinition.inc	/^FSEC_SEC_NOT	            EQU	$02				; -- Unsecured (all other patterns are Secured)$/;"	d
+FCCOBIX	MC9S12G96_ChipDefinition.inc	/^FCCOBIX			              EQU	$102			; Flash CCOB Index Register$/;"	d
+FCCOBIX_Bits	MC9S12G96_ChipDefinition.inc	/^FCCOBIX_Bits	            EQU	$03				; - Common Command Register Index$/;"	d
+FCNFG	MC9S12G96_ChipDefinition.inc	/^FCNFG			                EQU	$104			; Flash Configuration Register$/;"	d
+FCNFG_CCIE	MC9S12G96_ChipDefinition.inc	/^FCNFG_CCIE		            EQU	$80				; - Command Complete Interrupt Enable$/;"	d
+FCNFG_IGNSF	MC9S12G96_ChipDefinition.inc	/^FCNFG_IGNSF		            EQU	$10				; - Ignore Single Bit Fault$/;"	d
+FCNFG_FDFD	MC9S12G96_ChipDefinition.inc	/^FCNFG_FDFD		            EQU	$02				; - Force Double Bit Fault Detect$/;"	d
+FCNFG_FSFD	MC9S12G96_ChipDefinition.inc	/^FCNFG_FSFD		            EQU	$01				; - Force Single Bit Fault Detect$/;"	d
+FERCNFG	MC9S12G96_ChipDefinition.inc	/^FERCNFG			              EQU	$105			; Flash Error Configuration Register$/;"	d
+FERCNFG_DFDIE	MC9S12G96_ChipDefinition.inc	/^FERCNFG_DFDIE	            EQU	$02				; - Double Bit Fault Detect Interrupt Enable$/;"	d
+FERCNFG_SFDIE	MC9S12G96_ChipDefinition.inc	/^FERCNFG_SFDIE	            EQU	$01				; - Single Bit Fault Detect Interrupt Enable$/;"	d
+FSTAT	MC9S12G96_ChipDefinition.inc	/^FSTAT			                EQU	$106			; Flash Status Register$/;"	d
+FSTAT_CCIF	MC9S12G96_ChipDefinition.inc	/^FSTAT_CCIF		            EQU	$80				; - Command Complete Interrupt Flag$/;"	d
+FSTAT_ACCERR	MC9S12G96_ChipDefinition.inc	/^FSTAT_ACCERR	            EQU	$20				; - Flash Access Error Flag$/;"	d
+FSTAT_FPVIOL	MC9S12G96_ChipDefinition.inc	/^FSTAT_FPVIOL	            EQU	$10				; - Flash Protection Violation Flag$/;"	d
+FSTAT_MGBUSY	MC9S12G96_ChipDefinition.inc	/^FSTAT_MGBUSY	            EQU	$08				; - Memory Controller Busy Flag$/;"	d
+FSTAT_RSVD	MC9S12G96_ChipDefinition.inc	/^FSTAT_RSVD		            EQU	$04				; - Reserved Bit$/;"	d
+FSTAT_MGSTAT	MC9S12G96_ChipDefinition.inc	/^FSTAT_MGSTAT	            EQU	$03				; - Memory Controller Command Completion Status Flag$/;"	d
+FERSTAT	MC9S12G96_ChipDefinition.inc	/^FERSTAT			              EQU	$107			; Flash Error Status Register$/;"	d
+FERSTAT_DFDIF	MC9S12G96_ChipDefinition.inc	/^FERSTAT_DFDIF	            EQU	$02				; - Double Bit Fault Detect Interrupt Flag$/;"	d
+FERSTAT_SFDIF	MC9S12G96_ChipDefinition.inc	/^FERSTAT_SFDIF	            EQU	$01				; - Single Bit Fault Detect Interrupt Flag$/;"	d
+FPROT	MC9S12G96_ChipDefinition.inc	/^FPROT			                EQU	$108			; P-Flash Protection Register$/;"	d
+FPROT_FPOPEN	MC9S12G96_ChipDefinition.inc	/^FPROT_FPOPEN	            EQU	$80				; - Flash Protection Operation Enable$/;"	d
+FPROT_RNV6	MC9S12G96_ChipDefinition.inc	/^FPROT_RNV6		            EQU	$40				; - Reserved Nonvolatile Bit$/;"	d
+FPROT_FPHDIS	MC9S12G96_ChipDefinition.inc	/^FPROT_FPHDIS	            EQU	$20				; - Flash Protection Higher Address Range Disable$/;"	d
+FPROT_FPHS	MC9S12G96_ChipDefinition.inc	/^FPROT_FPHS		            EQU	$18				; - Flash Protection Higher Address Size$/;"	d
+FPROT_RNV	MC9S12G96_ChipDefinition.inc	/^FPROT_RNV		              EQU	$07				; - Reserved Nonvolatile Bits$/;"	d
+EEPROT	MC9S12G96_ChipDefinition.inc	/^EEPROT			              EQU	$109			; EEPROM Protection Register$/;"	d
+EEPROT_DPOPEN	MC9S12G96_ChipDefinition.inc	/^EEPROT_DPOPEN	            EQU	$80				; - EEPROM Protection Control$/;"	d
+EEPROT_DPSbits	MC9S12G96_ChipDefinition.inc	/^EEPROT_DPSbits	          EQU	$1F				; - EEPROM Protection Size$/;"	d
+EEPROT_DPS_32	MC9S12G96_ChipDefinition.inc	/^EEPROT_DPS_32	            EQU	$00				; -- $0400 – $041F$/;"	d
+EEPROT_DPS_64	MC9S12G96_ChipDefinition.inc	/^EEPROT_DPS_64	            EQU	$01				; -- $0400 – $043F$/;"	d
+EEPROT_DPS_96	MC9S12G96_ChipDefinition.inc	/^EEPROT_DPS_96	            EQU	$02				; -- $0400 – $045F$/;"	d
+EEPROT_DPS_128	MC9S12G96_ChipDefinition.inc	/^EEPROT_DPS_128	          EQU	$03				; -- $0400 – $047F$/;"	d
+EEPROT_DPS_160	MC9S12G96_ChipDefinition.inc	/^EEPROT_DPS_160	          EQU	$04				; -- $0400 – $049F$/;"	d
+EEPROT_DPS_192	MC9S12G96_ChipDefinition.inc	/^EEPROT_DPS_192	          EQU	$05				; -- $0400 – $04BF$/;"	d
+EEPROT_DPS_224	MC9S12G96_ChipDefinition.inc	/^EEPROT_DPS_224	          EQU	$06				; -- $0400 – $04BF$/;"	d
+EEPROT_DPS_256	MC9S12G96_ChipDefinition.inc	/^EEPROT_DPS_256	          EQU	$07				; -- $0400 – $04BF$/;"	d
+EEPROT_DPS_288	MC9S12G96_ChipDefinition.inc	/^EEPROT_DPS_288	          EQU	$08				; -- $0400 – $04BF$/;"	d
+EEPROT_DPS_320	MC9S12G96_ChipDefinition.inc	/^EEPROT_DPS_320	          EQU	$09				; -- $0400 – $04BF$/;"	d
+EEPROT_DPS_352	MC9S12G96_ChipDefinition.inc	/^EEPROT_DPS_352	          EQU	$0A				; -- $0400 – $04BF$/;"	d
+EEPROT_DPS_384	MC9S12G96_ChipDefinition.inc	/^EEPROT_DPS_384	          EQU	$0B				; -- $0400 – $04BF$/;"	d
+EEPROT_DPS_416	MC9S12G96_ChipDefinition.inc	/^EEPROT_DPS_416	          EQU	$0C				; -- $0400 – $04BF$/;"	d
+EEPROT_DPS_448	MC9S12G96_ChipDefinition.inc	/^EEPROT_DPS_448	          EQU	$0D				; -- $0400 – $04BF$/;"	d
+EEPROT_DPS_480	MC9S12G96_ChipDefinition.inc	/^EEPROT_DPS_480	          EQU	$0E				; -- $0400 – $04BF$/;"	d
+EEPROT_DPS_512	MC9S12G96_ChipDefinition.inc	/^EEPROT_DPS_512	          EQU	$0F				; -- $0400 – $05FF$/;"	d
+FCCOB	MC9S12G96_ChipDefinition.inc	/^FCCOB			                EQU	$10A			; Flash Common Command Object Register$/;"	d
+FCCOBHI	MC9S12G96_ChipDefinition.inc	/^FCCOBHI			              EQU	$10A$/;"	d
+FCCOBLO	MC9S12G96_ChipDefinition.inc	/^FCCOBLO			              EQU	$10B$/;"	d
+FCCOB_EVAB	MC9S12G96_ChipDefinition.inc	/^FCCOB_EVAB		            EQU	$01				; Erase Verify All Blocks$/;"	d
+FCCOB_EVB	MC9S12G96_ChipDefinition.inc	/^FCCOB_EVB		              EQU	$02				; Erase Verify Block$/;"	d
+FCCOB_EVPS	MC9S12G96_ChipDefinition.inc	/^FCCOB_EVPS		            EQU	$03				; Erase Verify P-Flash Section$/;"	d
+FCCOB_RO	MC9S12G96_ChipDefinition.inc	/^FCCOB_RO		              EQU	$04				; Read Once$/;"	d
+FCCOB_PP	MC9S12G96_ChipDefinition.inc	/^FCCOB_PP		              EQU	$06				; Program P-Flash$/;"	d
+FCCOB_PO	MC9S12G96_ChipDefinition.inc	/^FCCOB_PO		              EQU	$07				; Program Once$/;"	d
+FCCOB_EAB	MC9S12G96_ChipDefinition.inc	/^FCCOB_EAB		              EQU	$08				; Erase All Blocks$/;"	d
+FCCOB_EFB	MC9S12G96_ChipDefinition.inc	/^FCCOB_EFB		              EQU	$09				; Erase Flash Block$/;"	d
+FCCOB_EPS	MC9S12G96_ChipDefinition.inc	/^FCCOB_EPS		              EQU	$0A				; Erase P-Flash Sector$/;"	d
+FCCOB_UF	MC9S12G96_ChipDefinition.inc	/^FCCOB_UF		              EQU	$0B				; Unsecure Flash$/;"	d
+FCCOB_VBAK	MC9S12G96_ChipDefinition.inc	/^FCCOB_VBAK		            EQU	$0C				; Verify Backdoor Access Key$/;"	d
+FCCOB_SUML	MC9S12G96_ChipDefinition.inc	/^FCCOB_SUML		            EQU	$0D				; Set User Margin Level$/;"	d
+FCCOB_SFML	MC9S12G96_ChipDefinition.inc	/^FCCOB_SFML		            EQU	$0E				; Set Field Margin Level$/;"	d
+FCCOB_EVEES	MC9S12G96_ChipDefinition.inc	/^FCCOB_EVEES		            EQU	$10				; Erase Verify EEPROM Section$/;"	d
+FCCOB_PEE	MC9S12G96_ChipDefinition.inc	/^FCCOB_PEE		              EQU	$11				; Program EEPROM$/;"	d
+FCCOB_EEES	MC9S12G96_ChipDefinition.inc	/^FCCOB_EEES		            EQU	$12				; Erase EEPROM Sector$/;"	d
+FOPT	MC9S12G96_ChipDefinition.inc	/^FOPT			                EQU	$110			; Flash Option Register$/;"	d
+FCMD_VerifyALL	MC9S12G96_ChipDefinition.inc	/^FCMD_VerifyALL			      EQU	$01				; verify all blocks erased$/;"	d
+FCMD_VerifyBlock	MC9S12G96_ChipDefinition.inc	/^FCMD_VerifyBlock		      EQU	$02				; verify specific block erased$/;"	d
+FCMD_VerifyPsect	MC9S12G96_ChipDefinition.inc	/^FCMD_VerifyPsect		      EQU	$03				; verify P Section erased$/;"	d
+FCMD_ReadOnce	MC9S12G96_ChipDefinition.inc	/^FCMD_ReadOnce			        EQU	$04				; read  dedicated 64 byte field that was programmed once$/;"	d
+FCMD_ProgramP	MC9S12G96_ChipDefinition.inc	/^FCMD_ProgramP			        EQU	$06				; Program P section phrase$/;"	d
+FCMD_ProgramOnce	MC9S12G96_ChipDefinition.inc	/^FCMD_ProgramOnce		      EQU	$07				; Program dedicated 64 byte P section (write once)$/;"	d
+FCMD_EraseAll	MC9S12G96_ChipDefinition.inc	/^FCMD_EraseAll			        EQU	$08				; Erase all P and D blocks (must be un protected)$/;"	d
+FCMD_EraseBlock	MC9S12G96_ChipDefinition.inc	/^FCMD_EraseBlock			      EQU	$09				; Erase P or D block$/;"	d
+FCMD_EraseAllP	MC9S12G96_ChipDefinition.inc	/^FCMD_EraseAllP			      EQU	$0A				; Erase all P sector blocks$/;"	d
+FCMD_EraseSector	MC9S12G96_ChipDefinition.inc	/^FCMD_EraseSector		      EQU	$0A				; Erase P sector$/;"	d
+FCMD_UnsecurePD	MC9S12G96_ChipDefinition.inc	/^FCMD_UnsecurePD			      EQU	$0B				; Erase all P and D blocks then release security$/;"	d
+FCMD_VerBackdoor	MC9S12G96_ChipDefinition.inc	/^FCMD_VerBackdoor		      EQU	$0C				; Verify Backdoor Access Key$/;"	d
+FCMD_SetUserMargin	MC9S12G96_ChipDefinition.inc	/^FCMD_SetUserMargin		    EQU	$0D				; Set user Margin Level$/;"	d
+FCMD_SetFieldMargin	MC9S12G96_ChipDefinition.inc	/^FCMD_SetFieldMargin		    EQU	$0E				; Set Field Margin Level$/;"	d
+FCMD_EraseVerEEPROM	MC9S12G96_ChipDefinition.inc	/^FCMD_EraseVerEEPROM		    EQU	$10				; Erase Verify EEPROM Section$/;"	d
+FCMD_ProgramEEPROM	MC9S12G96_ChipDefinition.inc	/^FCMD_ProgramEEPROM		    EQU	$11				; Program EEPROM$/;"	d
+FCMD_EraseEEPROMsector	MC9S12G96_ChipDefinition.inc	/^FCMD_EraseEEPROMsector 	  EQU	$12				; Erase EEPROM Sector$/;"	d
+IVBR	MC9S12G96_ChipDefinition.inc	/^IVBR	                    EQU		$120			; Interrupt module base ( not RESET nor COP )$/;"	d
+PTT	MC9S12G96_ChipDefinition.inc	/^PTT		                    EQU		$240			; Port T Data							PORT T$/;"	d
+PTIT	MC9S12G96_ChipDefinition.inc	/^PTIT	                    EQU		$241			; INPUT State Register ( R Only)$/;"	d
+DDRT	MC9S12G96_ChipDefinition.inc	/^DDRT	                    EQU		$242			; Port T Data Direction$/;"	d
+PERT	MC9S12G96_ChipDefinition.inc	/^PERT	                    EQU		$244			; PullUp Enable$/;"	d
+PPST	MC9S12G96_ChipDefinition.inc	/^PPST	                    EQU		$245			; Pull Up\/Down ( Falling Edge Sensitivity \/ Pull Up = 0 )$/;"	d
+PTS	MC9S12G96_ChipDefinition.inc	/^PTS		                    EQU		$248			; I\/O state								PORT S$/;"	d
+PTIS	MC9S12G96_ChipDefinition.inc	/^PTIS	                    EQU		$249			; INPUT State Register ( R Only)$/;"	d
+DDRS	MC9S12G96_ChipDefinition.inc	/^DDRS	                    EQU		$24A			; Data Direction$/;"	d
+PERS	MC9S12G96_ChipDefinition.inc	/^PERS	                    EQU		$24C			; PullUp Enable$/;"	d
+PPSS	MC9S12G96_ChipDefinition.inc	/^PPSS	                    EQU		$24D			; Pull Up\/Down ( Falling Edge Sensitivity \/ Pull Up = 0 )$/;"	d
+WOMS	MC9S12G96_ChipDefinition.inc	/^WOMS	                    EQU		$24E			; Wired-OR Mode Select$/;"	d
+PRR0	MC9S12G96_ChipDefinition.inc	/^PRR0	                    EQU		$24F			; Alternate Pin Routing$/;"	d
+PTM	MC9S12G96_ChipDefinition.inc	/^PTM		                    EQU		$250			; I\/O state								PORT M$/;"	d
+PTIM	MC9S12G96_ChipDefinition.inc	/^PTIM	                    EQU		$251			; INPUT State Register ( R Only)$/;"	d
+DDRM	MC9S12G96_ChipDefinition.inc	/^DDRM	                    EQU		$252			; Data Direction$/;"	d
+PERM	MC9S12G96_ChipDefinition.inc	/^PERM	                    EQU		$254			; PullUp Enable$/;"	d
+PPSM	MC9S12G96_ChipDefinition.inc	/^PPSM	                    EQU		$255			; Pull Up\/Down ( Falling Edge Sensitivity \/ Pull Up = 0 )$/;"	d
+WOMM	MC9S12G96_ChipDefinition.inc	/^WOMM	                    EQU		$256			; Wired-OR Mode Select$/;"	d
+PKGCR	MC9S12G96_ChipDefinition.inc	/^PKGCR	                    EQU		$257			; Package Code Reg$/;"	d
+PTP	MC9S12G96_ChipDefinition.inc	/^PTP		                    EQU		$258			; I\/O state								PORT P$/;"	d
+PTIP	MC9S12G96_ChipDefinition.inc	/^PTIP	                    EQU		$259			; INPUT State Register ( R Only)$/;"	d
+DDRP	MC9S12G96_ChipDefinition.inc	/^DDRP	                    EQU		$25A			; Data Direction$/;"	d
+PERP	MC9S12G96_ChipDefinition.inc	/^PERP	                    EQU		$25C			; PullUp Enable$/;"	d
+PPSP	MC9S12G96_ChipDefinition.inc	/^PPSP	                    EQU		$25D			; Pull Up\/Down ( Falling Edge Sensitivity \/ Pull Up = 0 )$/;"	d
+PIEP	MC9S12G96_ChipDefinition.inc	/^PIEP	                    EQU		$25E			; Interrupt Enable$/;"	d
+PIFP	MC9S12G96_ChipDefinition.inc	/^PIFP	                    EQU		$25F			; Interrupt Flags$/;"	d
+PTJ	MC9S12G96_ChipDefinition.inc	/^PTJ		                    EQU		$268			; Port J Data 							PORT J$/;"	d
+PTIJ	MC9S12G96_ChipDefinition.inc	/^PTIJ	                    EQU		$269			; INPUT State Register ( R Only)$/;"	d
+DDRJ	MC9S12G96_ChipDefinition.inc	/^DDRJ	                    EQU		$26A			; Data Direction$/;"	d
+PERJ	MC9S12G96_ChipDefinition.inc	/^PERJ	                    EQU		$26C			; PullUp Enable$/;"	d
+PPSJ	MC9S12G96_ChipDefinition.inc	/^PPSJ	                    EQU		$26D			; Pull Up\/Down ( Up = 0 )$/;"	d
+PIEJ	MC9S12G96_ChipDefinition.inc	/^PIEJ	                    EQU		$26E			; Interrupt Enable$/;"	d
+PIFJ	MC9S12G96_ChipDefinition.inc	/^PIFJ	                    EQU		$26F			; Interrupt Flags$/;"	d
+PT0AD	MC9S12G96_ChipDefinition.inc	/^PT0AD	                    EQU		$270			; I\/O state								PORT AD$/;"	d
+PT1AD	MC9S12G96_ChipDefinition.inc	/^PT1AD	                    EQU		$271			; I\/O state$/;"	d
+PTI0AD	MC9S12G96_ChipDefinition.inc	/^PTI0AD	                  EQU		$272			; INPUT State Register ( R Only)$/;"	d
+PTI1AD	MC9S12G96_ChipDefinition.inc	/^PTI1AD	                  EQU		$273			; INPUT State$/;"	d
+DDR0AD	MC9S12G96_ChipDefinition.inc	/^DDR0AD	                  EQU		$274			; Data Direction 8-11$/;"	d
+DDR1AD	MC9S12G96_ChipDefinition.inc	/^DDR1AD	                  EQU		$275			; Data Direction 0-7$/;"	d
+PRR1	MC9S12G96_ChipDefinition.inc	/^PRR1	                    EQU		$277			; Alternate Pin Routing (QFP100 Only)$/;"	d
+PER0AD	MC9S12G96_ChipDefinition.inc	/^PER0AD	                  EQU		$278			; PullUp Enable 8-11					PORT AD$/;"	d
+PER1AD	MC9S12G96_ChipDefinition.inc	/^PER1AD	                  EQU		$279			; PullUp Enable 0-7$/;"	d
+PPS0AD	MC9S12G96_ChipDefinition.inc	/^PPS0AD	                  EQU		$27A			; Pull Up\/Down 8-11 ( Up = 0 )$/;"	d
+PPS1AD	MC9S12G96_ChipDefinition.inc	/^PPS1AD	                  EQU		$27B			; Pull Up\/Down 0-7 ( Up = 0 )$/;"	d
+PIE0AD	MC9S12G96_ChipDefinition.inc	/^PIE0AD	                  EQU		$27C			; Interrupt Enable 8-11$/;"	d
+PIE1AD	MC9S12G96_ChipDefinition.inc	/^PIE1AD	                  EQU		$27D			; Interrupt Enable 0-7$/;"	d
+PIF0AD	MC9S12G96_ChipDefinition.inc	/^PIF0AD	                  EQU		$27E			; Interrupt Flags 8-11$/;"	d
+PIF1AD	MC9S12G96_ChipDefinition.inc	/^PIF1AD	                  EQU		$27F			; Interrupt Flags 0-7$/;"	d
+CPMULVCTLEQU	MC9S12G96_ChipDefinition.inc	/^CPMULVCTLEQU	            EQU	$2F1			;$/;"	d
+CPMUAPICTLEQU	MC9S12G96_ChipDefinition.inc	/^CPMUAPICTLEQU	            EQU	$2F2			;$/;"	d
+CPMUACLKTREQU	MC9S12G96_ChipDefinition.inc	/^CPMUACLKTREQU	            EQU	$2F3			;$/;"	d
+CPMUAPIRHEQU	MC9S12G96_ChipDefinition.inc	/^CPMUAPIRHEQU	            EQU	$2F4			;$/;"	d
+CPMUAPIRLEQU	MC9S12G96_ChipDefinition.inc	/^CPMUAPIRLEQU	            EQU	$2F5			;$/;"	d
+IRCTRIMHEQU	MC9S12G96_ChipDefinition.inc	/^IRCTRIMHEQU		            EQU	$2F8			;$/;"	d
+IRCTRIMLEQU	MC9S12G96_ChipDefinition.inc	/^IRCTRIMLEQU		            EQU	$2F9			;$/;"	d
+CPMUOSCEQU	MC9S12G96_ChipDefinition.inc	/^CPMUOSCEQU		            EQU	$2FA			;$/;"	d
+CPMUPROTEQU	MC9S12G96_ChipDefinition.inc	/^CPMUPROTEQU		            EQU	$2FB			;$/;"	d
+tvPATTERN	LEDv2_PATTERN_handler.inc	/^tvPATTERN ds 2$/;"	d
+PATTERN_Init	LEDv2_PATTERN_handler.inc	/^PATTERN_Init:$/;"	l
+PATTERN_Update	LEDv2_PATTERN_handler.inc	/^PATTERN_Update:$/;"	l
+PATTERN_t_Idle	LEDv2_PATTERN_handler.inc	/^PATTERN_t_Idle:$/;"	l
