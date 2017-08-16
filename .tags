@@ -1,0 +1,173 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ACMP_Interrupt	.\LEDv2_main.asm	/^ACMP_Interrupt$/;"	l
+ADC_Interrupt	.\LEDv2_main.asm	/^ADC_Interrupt$/;"	l
+ADCcmp_Interrupt	.\LEDv2_main.asm	/^ADCcmp_Interrupt$/;"	l
+API_Interrupt	.\LEDv2_main.asm	/^API_Interrupt$/;"	l
+AmountB	.\OLD code\LEDstrandFlickerSwitcher.asm	/^AmountB   ds 1$/;"	d
+AmountB2	.\OLD code\LEDstrandFlickerSwitcher.asm	/^AmountB2  ds 1$/;"	d
+AmountG	.\OLD code\LEDstrandFlickerSwitcher.asm	/^AmountG   ds 1$/;"	d
+AmountG2	.\OLD code\LEDstrandFlickerSwitcher.asm	/^AmountG2  ds 1$/;"	d
+AmountR	.\OLD code\LEDstrandFlickerSwitcher.asm	/^AmountR   ds 1$/;"	d
+AmountR2	.\OLD code\LEDstrandFlickerSwitcher.asm	/^AmountR2  ds 1$/;"	d
+CANerr_Interrupt	.\LEDv2_main.asm	/^CANerr_Interrupt$/;"	l
+CANrx_Interrupt	.\LEDv2_main.asm	/^CANrx_Interrupt$/;"	l
+CANtx_Interrupt	.\LEDv2_main.asm	/^CANtx_Interrupt$/;"	l
+CANwu_Interrupt	.\LEDv2_main.asm	/^CANwu_Interrupt$/;"	l
+COP_Clk_Reset	.\LEDv2_main.asm	/^COP_Clk_Reset$/;"	l
+COP_TimeoutReset	.\LEDv2_main.asm	/^COP_TimeoutReset$/;"	l
+DIPPULUP	.\OLD code\LEDstrandFlickerSwitcher.asm	/^DIPPULUP  EQU $0278$/;"	d
+DIPSWITCH	.\OLD code\LEDstrandFlickerSwitcher.asm	/^DIPSWITCH EQU $0271$/;"	d
+DoNothing	.\OLD code\LEDstrandFlickerSwitcher.asm	/^DoNothing:        ; FFF2$/;"	l
+ENAPULUP	.\OLD code\LEDstrandFlickerSwitcher.asm	/^ENAPULUP  EQU $007C$/;"	d
+End_Frame	.\OLD code\LEDstrandFlickerSwitcher.asm	/^End_Frame:$/;"	l
+FLcmd_Interrupt	.\LEDv2_main.asm	/^FLcmd_Interrupt$/;"	l
+FLerr_Interrupt	.\LEDv2_main.asm	/^FLerr_Interrupt$/;"	l
+INPUT_Idle	.\OLD code\LEDstrandFlickerSwitcher.asm	/^INPUT_Idle$/;"	l
+INPUT_Process	.\OLD code\LEDstrandFlickerSwitcher.asm	/^INPUT_Process:$/;"	l
+INPUT_Select1	.\OLD code\LEDstrandFlickerSwitcher.asm	/^INPUT_Select1$/;"	l
+INPUT_Select2	.\OLD code\LEDstrandFlickerSwitcher.asm	/^INPUT_Select2$/;"	l
+INPUT_Select3	.\OLD code\LEDstrandFlickerSwitcher.asm	/^INPUT_Select3$/;"	l
+INPUT_exit	.\OLD code\LEDstrandFlickerSwitcher.asm	/^INPUT_exit$/;"	l
+IRQ_Interrupt	.\LEDv2_main.asm	/^IRQ_Interrupt$/;"	l
+LED_CLK	.\OLD code\LEDstrandFlickerSwitcher.asm	/^LED_CLK$/;"	l
+LED_Process	.\OLD code\LEDstrandFlickerSwitcher.asm	/^LED_Process:$/;"	l
+LED_SendBlue	.\OLD code\LEDstrandFlickerSwitcher.asm	/^LED_SendBlue:$/;"	l
+LED_SendGreen	.\OLD code\LEDstrandFlickerSwitcher.asm	/^LED_SendGreen:$/;"	l
+LED_SendIntensity	.\OLD code\LEDstrandFlickerSwitcher.asm	/^LED_SendIntensity:$/;"	l
+LED_SendRed	.\OLD code\LEDstrandFlickerSwitcher.asm	/^LED_SendRed:$/;"	l
+LED_exit	.\OLD code\LEDstrandFlickerSwitcher.asm	/^LED_exit$/;"	l
+LVI_Interrupt	.\LEDv2_main.asm	/^LVI_Interrupt$/;"	l
+OSC_Interrupt	.\LEDv2_main.asm	/^OSC_Interrupt$/;"	l
+OneSecCnt	.\OLD code\LEDstrandFlickerSwitcher.asm	/^OneSecCnt ds 1$/;"	d
+PAI_Interrupt	.\LEDv2_main.asm	/^PAI_Interrupt$/;"	l
+PAO_Interrupt	.\LEDv2_main.asm	/^PAO_Interrupt$/;"	l
+PLL_Interrupt	.\LEDv2_main.asm	/^PLL_Interrupt$/;"	l
+PTAD	.\OLD code\LEDstrandFlickerSwitcher.asm	/^PTAD      EQU $0270$/;"	d
+PTADRW	.\OLD code\LEDstrandFlickerSwitcher.asm	/^PTADRW    EQU $0274$/;"	d
+PTP	.\OLD code\LEDstrandFlickerSwitcher.asm	/^PTP       EQU $0258$/;"	d
+PTPDDR	.\OLD code\LEDstrandFlickerSwitcher.asm	/^PTPDDR    EQU $025A$/;"	d
+PatternSelect	.\OLD code\LEDstrandFlickerSwitcher.asm	/^PatternSelect ds 1$/;"	d
+PatternSelect2	.\OLD code\LEDstrandFlickerSwitcher.asm	/^PatternSelect2 ds 1$/;"	d
+Pattern_AllBLoop	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_AllBLoop$/;"	l
+Pattern_AllGLoop	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_AllGLoop$/;"	l
+Pattern_AllRLoop	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_AllRLoop$/;"	l
+Pattern_BBlueWGreenLoop	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_BBlueWGreenLoop$/;"	l
+Pattern_BBlueWGreen_exit	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_BBlueWGreen_exit$/;"	l
+Pattern_BBlueWRedLoop	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_BBlueWRedLoop$/;"	l
+Pattern_BBlueWRed_exit	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_BBlueWRed_exit$/;"	l
+Pattern_BBlue_exit	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_BBlue_exit$/;"	l
+Pattern_Blink	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_Blink:$/;"	l
+Pattern_BlinkBlue	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_BlinkBlue:$/;"	l
+Pattern_BlinkBlueWGreen	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_BlinkBlueWGreen:$/;"	l
+Pattern_BlinkBlueWRed	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_BlinkBlueWRed:$/;"	l
+Pattern_BlinkOff	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_BlinkOff$/;"	l
+Pattern_BlinkOn	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_BlinkOn$/;"	l
+Pattern_Blink_exit	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_Blink_exit$/;"	l
+Pattern_Default	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_Default:$/;"	l
+Pattern_DefaultLoop	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_DefaultLoop$/;"	l
+Pattern_Eother	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_Eother:$/;"	l
+Pattern_EotherLoop	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_EotherLoop$/;"	l
+Pattern_EotherLoopEnd	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_EotherLoopEnd$/;"	l
+Pattern_EotherOff	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_EotherOff$/;"	l
+Pattern_EotherOn	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_EotherOn$/;"	l
+Pattern_Eother_exit	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_Eother_exit$/;"	l
+Pattern_OffLoop	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_OffLoop$/;"	l
+Pattern_Process	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_Process:$/;"	l
+Pattern_Tst2	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_Tst2$/;"	l
+Pattern_Tst3	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_Tst3$/;"	l
+Pattern_Tst4	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_Tst4$/;"	l
+Pattern_Tst5	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_Tst5$/;"	l
+Pattern_Tst6	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_Tst6$/;"	l
+Pattern_Tst7	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_Tst7$/;"	l
+Pattern_Tst8	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_Tst8$/;"	l
+Pattern_Tst9	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_Tst9$/;"	l
+Pattern_TstPattern	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_TstPattern:$/;"	l
+Pattern_Tst_Default	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_Tst_Default$/;"	l
+Pattern_TurnAllBlue	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_TurnAllBlue:$/;"	l
+Pattern_TurnAllGreen	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_TurnAllGreen:$/;"	l
+Pattern_TurnAllOff	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_TurnAllOff:$/;"	l
+Pattern_TurnAllRed	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_TurnAllRed:$/;"	l
+Pattern_TurnAllWhite	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_TurnAllWhite:$/;"	l
+Pattern_WhiteLoop	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_WhiteLoop$/;"	l
+Pattern_exit	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Pattern_exit$/;"	l
+PortAD_Interrupt	.\LEDv2_main.asm	/^PortAD_Interrupt$/;"	l
+PortJ_Interrupt	.\LEDv2_main.asm	/^PortJ_Interrupt$/;"	l
+PortP_Interrupt	.\LEDv2_main.asm	/^PortP_Interrupt$/;"	l
+PowerOn_Reset	.\LEDv2_main.asm	/^PowerOn_Reset:$/;"	l
+Process_Byte	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Process_Byte:$/;"	l
+RTIH_00000	.\LEDv2_main.asm	/^RTIH_00000$/;"	l
+RTIH_00000	.\OLD code\LEDstrandFlickerSwitcher.asm	/^RTIH_00000$/;"	l
+RTIH_00001	.\LEDv2_main.asm	/^RTIH_00001$/;"	l
+RTIH_00001	.\OLD code\LEDstrandFlickerSwitcher.asm	/^RTIH_00001$/;"	l
+RTIH_00002	.\OLD code\LEDstrandFlickerSwitcher.asm	/^RTIH_00002$/;"	l
+RTIHandler	.\OLD code\LEDstrandFlickerSwitcher.asm	/^RTIHandler:       ; FFF0$/;"	l
+RT_Interrupt	.\LEDv2_main.asm	/^RT_Interrupt:$/;"	l
+SCI0_Interrupt	.\LEDv2_main.asm	/^SCI0_Interrupt$/;"	l
+SCI1_Interrupt	.\LEDv2_main.asm	/^SCI1_Interrupt$/;"	l
+SCI2_Interrupt	.\LEDv2_main.asm	/^SCI2_Interrupt$/;"	l
+SPI0_Interrupt	.\LEDv2_main.asm	/^SPI0_Interrupt$/;"	l
+SPI1_Interrupt	.\LEDv2_main.asm	/^SPI1_Interrupt$/;"	l
+SPI2_Interrupt	.\LEDv2_main.asm	/^SPI2_Interrupt$/;"	l
+SW_Interrupt	.\LEDv2_main.asm	/^SW_Interrupt$/;"	l
+SoftTimer0	.\LEDv2_main.asm	/^SoftTimer0 ds 2             ; LED Task$/;"	d
+SoftTimer0	.\OLD code\LEDstrandFlickerSwitcher.asm	/^SoftTimer0 ds 2$/;"	d
+SoftTimer1	.\LEDv2_main.asm	/^SoftTimer1 ds 2             ; Pattern Task$/;"	d
+SoftTimer1	.\OLD code\LEDstrandFlickerSwitcher.asm	/^SoftTimer1 ds 2$/;"	d
+SoftTimer2	.\LEDv2_main.asm	/^SoftTimer2 ds 2             ; USR Task$/;"	d
+Spurious_Interrupt	.\LEDv2_main.asm	/^Spurious_Interrupt$/;"	l
+Start_Frame	.\OLD code\LEDstrandFlickerSwitcher.asm	/^Start_Frame:$/;"	l
+TC0_Interrupt	.\LEDv2_main.asm	/^TC0_Interrupt$/;"	l
+TC1_Interrupt	.\LEDv2_main.asm	/^TC1_Interrupt$/;"	l
+TC2_Interrupt	.\LEDv2_main.asm	/^TC2_Interrupt$/;"	l
+TC3_Interrupt	.\LEDv2_main.asm	/^TC3_Interrupt$/;"	l
+TC4_Interrupt	.\LEDv2_main.asm	/^TC4_Interrupt$/;"	l
+TC5_Interrupt	.\LEDv2_main.asm	/^TC5_Interrupt$/;"	l
+TC6_Interrupt	.\LEDv2_main.asm	/^TC6_Interrupt$/;"	l
+TC7_Interrupt	.\LEDv2_main.asm	/^TC7_Interrupt$/;"	l
+TOv_Interrupt	.\LEDv2_main.asm	/^TOv_Interrupt$/;"	l
+Trap_Interrupt	.\LEDv2_main.asm	/^Trap_Interrupt$/;"	l
+USRIN_DDR	.\OLD code\LEDstrandFlickerSwitcher.asm	/^USRIN_DDR   EQU $0242$/;"	d
+USRIN_PUPEN	.\OLD code\LEDstrandFlickerSwitcher.asm	/^USRIN_PUPEN EQU $0244$/;"	d
+USRIN_Port	.\OLD code\LEDstrandFlickerSwitcher.asm	/^USRIN_Port  EQU $0240$/;"	d
+USRIN_bit1	.\OLD code\LEDstrandFlickerSwitcher.asm	/^USRIN_bit1  EQU %00000010$/;"	d
+USRIN_bit2	.\OLD code\LEDstrandFlickerSwitcher.asm	/^USRIN_bit2  EQU %00001000$/;"	d
+XIRQ_Interrupt	.\LEDv2_main.asm	/^XIRQ_Interrupt$/;"	l
+_BOTH	.\OLD code\LEDstrandFlickerSwitcher.asm	/^_BOTH     EQU #$0C$/;"	d
+_CLK	.\OLD code\LEDstrandFlickerSwitcher.asm	/^_CLK      EQU #$08$/;"	d
+_DATA	.\OLD code\LEDstrandFlickerSwitcher.asm	/^_DATA     EQU #$04$/;"	d
+_LEDCOUNT	.\OLD code\LEDstrandFlickerSwitcher.asm	/^_LEDCOUNT  EQU #14            ;number of LEDs$/;"	d
+blue	.\OLD code\LEDstrandFlickerSwitcher.asm	/^blue      ds 32$/;"	d
+clkRise	.\OLD code\LEDstrandFlickerSwitcher.asm	/^clkRise:$/;"	l
+cycle8	.\OLD code\LEDstrandFlickerSwitcher.asm	/^cycle8:$/;"	l
+dataOf0	.\OLD code\LEDstrandFlickerSwitcher.asm	/^dataOf0:$/;"	l
+dataOf1	.\OLD code\LEDstrandFlickerSwitcher.asm	/^dataOf1:$/;"	l
+green	.\OLD code\LEDstrandFlickerSwitcher.asm	/^green     ds 32$/;"	d
+init	.\OLD code\LEDstrandFlickerSwitcher.asm	/^init:$/;"	l
+intensity	.\OLD code\LEDstrandFlickerSwitcher.asm	/^intensity ds 32$/;"	d
+main	.\LEDv2_main.asm	/^main:$/;"	l
+main	.\OLD code\LEDstrandFlickerSwitcher.asm	/^main:$/;"	l
+pIndex	.\OLD code\LEDstrandFlickerSwitcher.asm	/^pIndex    ds 1$/;"	d
+pIndex2	.\OLD code\LEDstrandFlickerSwitcher.asm	/^pIndex2   ds 1$/;"	d
+pIndex3	.\OLD code\LEDstrandFlickerSwitcher.asm	/^pIndex3   ds 1$/;"	d
+prgSegment	.\LEDv2_main.asm	/^prgSegment  EQU $C000$/;"	d
+ramSegment	.\LEDv2_main.asm	/^ramSegment  EQU $2000$/;"	d
+red	.\OLD code\LEDstrandFlickerSwitcher.asm	/^red       ds 32$/;"	d
+setData	.\OLD code\LEDstrandFlickerSwitcher.asm	/^setData:$/;"	l
+sharedValue	.\LEDv2_main.asm	/^sharedValue ds 1$/;"	d
+taskTimer	.\LEDv2_main.asm	/^taskTimer EQU 0      ; Create name for Task Timer$/;"	d
+taskVector	.\LEDv2_main.asm	/^taskVector EQU 0      ; Create name for Dispatch Vector$/;"	d
+timer0	.\OLD code\LEDstrandFlickerSwitcher.asm	/^timer0:$/;"	l
+timer0_exit	.\OLD code\LEDstrandFlickerSwitcher.asm	/^timer0_exit$/;"	l
+timer0_loop	.\OLD code\LEDstrandFlickerSwitcher.asm	/^timer0_loop$/;"	l
+timerloop	.\OLD code\LEDstrandFlickerSwitcher.asm	/^timerloop:$/;"	l
+timerloop2	.\OLD code\LEDstrandFlickerSwitcher.asm	/^timerloop2:$/;"	l
+timerloop3	.\OLD code\LEDstrandFlickerSwitcher.asm	/^timerloop3:$/;"	l
+wait	.\OLD code\LEDstrandFlickerSwitcher.asm	/^wait:$/;"	l
+waiter	.\OLD code\LEDstrandFlickerSwitcher.asm	/^waiter    ds 1$/;"	d
+waiter2	.\OLD code\LEDstrandFlickerSwitcher.asm	/^waiter2   ds 1$/;"	d
+waiter3	.\OLD code\LEDstrandFlickerSwitcher.asm	/^waiter3   ds 1$/;"	d
