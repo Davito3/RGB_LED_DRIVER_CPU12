@@ -637,14 +637,14 @@ init:
   MOVB #$00 PatternSelect2    ;resets pattern selecter
 
   MOVB #$19 $003B             ;sets time for timer interrupt
-  BSET $0038 #$80             ;enable a timer interrupt
+  MOVB #CPMUFLG_RTIF, CPMUFLG   ;enable a timer interrupt
 
-  BSET PTPDDR #$20
+  BSET PTPDDR, #$20
 
   CLI
   JSR timer0
 ;******************************************************************************
-; Mianline
+; Mailine
 ;******************************************************************************
 
 main:

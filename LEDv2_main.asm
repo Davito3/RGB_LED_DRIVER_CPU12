@@ -40,11 +40,11 @@ taskTimer EQU 0               ; Create name for Task Timer
 
 PowerOn_Reset:
 
-  LDS $3FFF
+  LDS $3FFF                           ;Load Stack Pointer
 
 
-  MOVB #$19 $003B             ;sets time for timer interrupt
-  BSET $0038 #$80             ;enable a timer interrupt
+  MOVB #$19 CPMURTI                   ;sets time for timer interrupt
+  MOVB #CPMUFLG_RTIF, CPMUFLG         ;enable a timer interrupt
 
 
   JSR LED_Init
@@ -52,7 +52,7 @@ PowerOn_Reset:
   CLI
 
 ;******************************************************************************
-; Main
+; MainLine
 ;******************************************************************************
 
 main:
@@ -61,18 +61,22 @@ main:
 
 
   BRA main
+
 ;*****************************************************************************************
 ;	Interrupt Handler
 ;*****************************************************************************************
 
-RT_Interrupt
-  BSET $0037 #$80             ;reset the interrupt
 
-  LDAA
+RT_Interrupt:
 
-
-
-	RTI
+  MOVB #CPMUFLG_RTIF, CPMUFLG         ;reset the interrupt
+RTIH_00000
+  LDX SoftTimer0
+  BEQ RTIH_00001
+  DEX
+  STX SoftTimer0
+RTIH_00001
+  RTI
 
 ;*****************************************************************************************
 ;	Interrupts
